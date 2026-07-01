@@ -1,0 +1,42 @@
+﻿<Window x:Class="HomeOrOffice.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeOrOffice"
+        mc:Ignorable="d"
+        Title="HomeOrOffice" Height="400" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="/Resources/pictures/Zeichnung1.jpg">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="StyleButtons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Button Template="{DynamicResource tbExport}" Style="{DynamicResource Export}" x:Name="btnExport" Content="" HorizontalAlignment="Left" Margin="60,0,0,230" VerticalAlignment="Bottom" Width="80" Height="80" Click="BtnExport_Click"/>
+        <Calendar x:Name="cDayPicker" Margin="180,0,180,170" VerticalAlignment="Bottom" Height="177" SelectedDatesChanged="CDayPicker_SelectedDatesChanged"/>
+        <Label Style="{DynamicResource Header}" x:Name="lbRead" Content="lbRead" VerticalAlignment="Bottom" FontFamily="Arial" FontSize="16" Margin="0,0,20,250.4" HorizontalAlignment="Right" Width="160" RenderTransformOrigin="0.5,0.5" Height="80" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Button Template="{DynamicResource tbDefaultCancel}" Style="{DynamicResource DefaultCancel}" x:Name="btnDelete" Content="Delete Entry" VerticalAlignment="Bottom" Width="100" RenderTransformOrigin="-0.509,1.149" Click="BtnDelete_Click" Cursor="Hand" HorizontalAlignment="Right" Margin="0,0,50,190" />
+        <Canvas Height="150" Margin="122,0,122,15.4" VerticalAlignment="Bottom">
+            <Button Template="{DynamicResource tbDefaultSubmit}" Style="{DynamicResource DefaultSubmit}" x:Name="btnSubmit" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Click="btnSubmitClick" IsEnabled="False" Canvas.Top="118" Margin="0" RenderTransformOrigin="0.5,0.5" Canvas.Left="75" />
+            <Button Template="{DynamicResource tbDefaultCancel}" Style="{DynamicResource DefaultCancel}" x:Name="btnCancel" Content="Cancel" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.509,1.149" Click="btnCancelClick" Cursor="Hand" Canvas.Left="205" Canvas.Top="118" HorizontalAlignment="Right" />
+            <RadioButton Style="{DynamicResource DefaultCheckBox}" x:Name="cbHome" Content="at Home" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.924,1.333" Canvas.Left="75" Canvas.Top="54" VerticalContentAlignment="Center" FontSize="14"/>
+            <RadioButton Style="{DynamicResource DefaultCheckBox}" x:Name="cbOffice" Content="in the Office" HorizontalAlignment="Right" VerticalAlignment="Top" RenderTransformOrigin="0.924,1.333" Canvas.Left="205" Canvas.Top="54" FontSize="14" VerticalContentAlignment="Center"/>
+            <RadioButton Style="{DynamicResource DefaultCheckBox}" x:Name="cbBusinessTrip" Content="Business Trip" HorizontalAlignment="Right" VerticalAlignment="Top" RenderTransformOrigin="0.924,1.333" Canvas.Left="126" Canvas.Top="82" FontSize="14" VerticalContentAlignment="Center"/>
+            <Label Style="{DynamicResource Header}" x:Name="lbHeader" Content="Where are you today?" HorizontalContentAlignment="Center" VerticalAlignment="Top" FontFamily="Arial" FontSize="18" Canvas.Left="75" Canvas.Top="10" Width="205" Margin="0"/>
+        </Canvas>
+        <Button x:Name="btEnglisch" Template="{DynamicResource tbPicture}" Style="{DynamicResource DefaultLanguag}"  Content="" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="20" Height="20" Tag="en" Click="btSwitchLanguage">
+            <Button.Background>
+                <ImageBrush ImageSource="/Resources/pictures/England.png"/>
+            </Button.Background>
+        </Button>
+        <Button x:Name="btDeutsch" Template="{DynamicResource tbPicture}" Style="{DynamicResource DefaultLanguag}" Content="" HorizontalAlignment="Left" Margin="40,0,0,10" VerticalAlignment="Bottom" Width="20" Height="20" Click="btSwitchLanguage" Tag="de">
+            <Button.Background>
+                <ImageBrush ImageSource="/Resources/pictures/Deutschland.png"/>
+            </Button.Background>
+        </Button>
+        <Button x:Name="btnErweitern" Content="more..." HorizontalAlignment="Right" Margin="0,0,9.6,10.4" VerticalAlignment="Bottom" Width="80" Height="20" Cursor="Hand" Click="BtnErweitern_Click"/>
+
+    </Grid>
+</Window>

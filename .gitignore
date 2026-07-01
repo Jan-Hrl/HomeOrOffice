@@ -1,0 +1,22 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+Debug/
+Release/
+
+# Publish
+publish/
+*.publish.xml
+
+# Rider / JetBrains
+.idea/
+
+# Logs
+*.log
