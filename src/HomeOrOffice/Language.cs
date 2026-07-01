@@ -1,59 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
 using System.Resources;
 using System.Windows.Controls;
-using System.Windows.Shapes;
 using System.Windows.Media;
 
 namespace HomeOrOffice
 {
-    public partial class MainWindow
+    internal partial class MainWindow
     {
+        /// <summary>CultureInfo der App</summary>
         private CultureInfo ci = null;
+
+        /// <summary>Resourcemanager für die sprachabhängige Strings</summary>
         private ResourceManager rm;
 
+        /// <summary>
+        /// Legt die Sprache fest, die beim Starten ausgewählt ist
+        /// </summary>
         private void SetLanguage()
         {
             rm = new ResourceManager("HomeOrOffice.Resources.String", Assembly.GetExecutingAssembly());
-            String CurrentCulture = Thread.CurrentThread.CurrentUICulture.Name;
-            switch (CurrentCulture)
-            {
-                case "de":
-                case "de-DE":
-                    ci = new CultureInfo("de");
-                    break;
-                case "en-EN":
-                case "en-GB":
-                    ci = new CultureInfo("en");
-                    break;
-                default:
-                    ci = new CultureInfo("en-GB");
-                    break;
-            }
+
+            String cultureName = Thread.CurrentThread.CurrentUICulture.Name;
+            if (cultureName.StartsWith("de"))
+                ci = new CultureInfo("de");
+            else
+                ci = new CultureInfo("en");
+
         }
 
+        /// <summary>
+        /// Event das die Sprache wechselt
+        /// </summary>
+        /// <param name="sender">Das Objekt, das das Ereignis ausgelöst hat</param>
+        /// <param name="e">Die RoutedEventArgs, die mit dem Event übergeben werden</param>
         private void btSwitchLanguage(Object sender, RoutedEventArgs e)
         {
             CultureInfo compare = new CultureInfo((String)((Button)sender).Tag);
-            if (Equals(compare, ci))
+            if (ci.Name == compare.Name)
                 return;
             ci = compare;
+
+            //Sichtbare Texte neu schreiben
             SetMainText();
         }
 
+        /// <summary>
+        /// Methode die alle sprachabhängige Texte des Main Dialog schreibt
+        /// </summary>
         private void SetMainText()
         {
             if (rm == null)
             {
                 SetLanguage();
             }
+
             btnExport.Content       = rm.GetString($"btnExportText", ci);
             btnDelete.Content       = rm.GetString($"btnDeleteText", ci);
             btnSubmit.Content       = rm.GetString($"btnSubmitText", ci);
@@ -62,25 +66,28 @@ namespace HomeOrOffice
             cbOffice.Content        = rm.GetString($"cbOfficeText", ci);
             cbBusinessTrip.Content  = rm.GetString($"cbBusinessTripText", ci);
 
-            if ((Boolean)btnErweitern.Tag != NichtErweitert)
+            //button Text ändert sich, sicherstellen das Richter angezeigt wird
+            if ((Dialog)btnErweitern.Tag == Dialog.IstErweitert)
             {
                 btnErweitern.Content = rm.GetString($"btnErweiternLess", ci);
                 lbHeader.Content = rm.GetString($"lbHeaderSelect", ci);
             }
-            else
+            else if ((Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
             {
                 btnErweitern.Content = rm.GetString($"btnErweiternMore", ci);
                 lbHeader.Content = rm.GetString($"lbHeaderWhere", ci);
             }
-            if (lbRead?.Tag != null)
-                WritelbRead((DBHandler.DBEntry)lbRead?.Tag);
+
+            WritelbRead(lastReadOrWritenEntry);
         }
 
+        /// <summary>
+        /// schreibt Text je nach dem was es für einen Eintrag für den 
+        /// gewählten Tag gibt.
+        /// </summary>
+        /// <param name="DBEntry">Datenbankwert des jeweiligen Tages</param>
         private void WritelbRead(DBHandler.DBEntry DBEntry)
         {
-            if (lbRead == null)
-                return;
-
             lbRead.Content = "";
             switch (DBEntry)
             {
@@ -111,8 +118,8 @@ namespace HomeOrOffice
                     btnDelete.IsEnabled = false;
                     break;
             }
-            lbRead.Content = lbRead.Content.ToString().Replace("\\n", Environment.NewLine);
-            lbRead.Tag = DBEntry;
+
+            lastReadOrWritenEntry = DBEntry;
         }
 
     }

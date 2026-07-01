@@ -125,16 +125,21 @@ data</value>
     <value>Englisch</value>
   </data>
   <data name="lbReadAtHome" xml:space="preserve">
-    <value>You worked \nat home \non</value>
+    <value>You worked 
+at home 
+on</value>
   </data>
   <data name="lbReadError" xml:space="preserve">
-    <value>Something went \nwrong!!!</value>
+    <value>Something went 
+wrong!!!</value>
   </data>
   <data name="lbReadInTheOffice" xml:space="preserve">
-    <value>You worked \nin the office \non</value>
+    <value>You worked 
+in the office 
+on</value>
   </data>
   <data name="lbReadNoEntry" xml:space="preserve">
-    <value>No entry found.</value>
+    <value>No entry found</value>
   </data>
   <data name="btnCancelText" xml:space="preserve">
     <value>cancel</value>
@@ -152,7 +157,8 @@ data</value>
     <value>more...</value>
   </data>
   <data name="btnSubmitExportText" xml:space="preserve">
-    <value>Export to \nan Excel File</value>
+    <value>Export to 
+an Excel File</value>
   </data>
   <data name="btnSubmitText" xml:space="preserve">
     <value>submit</value>
@@ -176,7 +182,8 @@ data</value>
     <value>date in future</value>
   </data>
   <data name="ErrorMessageAlreadyEntry" xml:space="preserve">
-    <value>The entry for this date already exists. \Do you want to overwrite it?</value>
+    <value>The entry for this date already exists. 
+Do you want to overwrite it?</value>
   </data>
   <data name="ErrorMessageDeleteEntry" xml:space="preserve">
     <value>Are you sure you want to delete this entry?</value>
@@ -206,6 +213,8 @@ data</value>
     <value>Number of days you were on a business trip:</value>
   </data>
   <data name="lbReadBusinessTrip" xml:space="preserve">
-    <value>You were \non a business trip \non</value>
+    <value>You were 
+on a business trip 
+on</value>
   </data>
 </root>

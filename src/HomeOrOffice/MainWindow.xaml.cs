@@ -15,12 +15,20 @@ namespace HomeOrOffice
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    internal partial class MainWindow : Window
     {
-        private static Boolean IstErweitert = false;
-        private static Boolean NichtErweitert = true;
+        private enum Dialog
+        {
+            IstNichtErweitert = 0,
+            IstErweitert
+        }
+
+        //private static Boolean IstErweitert = false;
+        //private static Boolean NichtErweitert = true;
         private DBHandler dbhandler;
         private Boolean Autostart = false;
+
+        private DBHandler.DBEntry lastReadOrWritenEntry = DBHandler.DBEntry.Error;
 
 
         public MainWindow()
@@ -45,10 +53,10 @@ namespace HomeOrOffice
             cbBusinessTrip.Unchecked += cbCheckedChanged;
 
 
-            btnErweitern.Tag = NichtErweitert;
+            btnErweitern.Tag = Dialog.IstNichtErweitert;
+            SetMainText();
             this.Height = 200;
             this.Width = 600;
-            SetMainText();
 
             btnExport.HorizontalContentAlignment = HorizontalAlignment.Center;
             btnExport.VerticalContentAlignment = VerticalAlignment.Center;
@@ -101,7 +109,7 @@ namespace HomeOrOffice
                 }
             }
             Boolean setEntry = dbhandler.SetEntry(SelectedDay, (bool)cbHome?.IsChecked, (bool)cbOffice?.IsChecked, (bool)cbBusinessTrip?.IsChecked);
-            if (setEntry && (bool)btnErweitern.Tag == NichtErweitert)
+            if (setEntry && (Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
             {
                 this.Close();
             }
@@ -124,22 +132,22 @@ namespace HomeOrOffice
 
         private void BtnErweitern_Click(Object sender, RoutedEventArgs e)
         {
-            if ((Boolean)btnErweitern.Tag == NichtErweitert)
+            if ((Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
             {
                 Animation(400);
                 btnErweitern.Content = rm.GetString($"btnErweiternLess", ci);
                 lbHeader.Content = rm.GetString($"lbHeaderSelect", ci);
-                btnErweitern.Tag = false;
+                btnErweitern.Tag = Dialog.IstErweitert;
                 cDayPicker.SelectedDate = DateTime.Now;
                 WritelbRead(dbhandler.GetDate((DateTime)cDayPicker.SelectedDate));
             }
-            else if ((Boolean)btnErweitern.Tag == IstErweitert)
+            else if ((Dialog)btnErweitern.Tag == Dialog.IstErweitert)
             {
                 Animation(200);
                 btnErweitern.Content = rm.GetString($"btnErweiternMore", ci);
                 lbHeader.Content = rm.GetString($"lbHeaderWhere", ci);
                 cDayPicker.SelectedDate = DateTime.Now;
-                btnErweitern.Tag = true;
+                btnErweitern.Tag = Dialog.IstNichtErweitert;
             }
         }
 

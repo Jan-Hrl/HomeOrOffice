@@ -125,16 +125,22 @@ exportieren</value>
     <value>Deutsch</value>
   </data>
   <data name="lbReadAtHome" xml:space="preserve">
-    <value>Sie arbeiteten \nzu Hause \nam</value>
+    <value>Sie arbeiteten 
+zu Hause 
+am</value>
   </data>
   <data name="lbReadError" xml:space="preserve">
-    <value>Ein Fehler \nist Aufgetreten!!!</value>
+    <value>Ein Fehler 
+ist Aufgetreten!!!</value>
   </data>
   <data name="lbReadInTheOffice" xml:space="preserve">
-    <value>Sie arbeiteten \nim Büro \nam</value>
+    <value>Sie arbeiteten 
+im Büro 
+am</value>
   </data>
   <data name="lbReadNoEntry" xml:space="preserve">
-    <value>Kein Eintrag \ngefunden </value>
+    <value>Kein Eintrag 
+gefunden</value>
   </data>
   <data name="btnCancelText" xml:space="preserve">
     <value>abbrechen</value>
@@ -152,10 +158,11 @@ exportieren</value>
     <value>mehr...</value>
   </data>
   <data name="btnSubmitExportText" xml:space="preserve">
-    <value>Exportieren in \neine Excel-Datei</value>
+    <value>Exportieren in 
+eine Excel-Datei</value>
   </data>
   <data name="btnSubmitText" xml:space="preserve">
-    <value>bestätigen </value>
+    <value>bestätigen</value>
   </data>
   <data name="cbHomeText" xml:space="preserve">
     <value>zu Hause</value>
@@ -164,7 +171,7 @@ exportieren</value>
     <value>im Büro</value>
   </data>
   <data name="CommandLineError" xml:space="preserve">
-    <value>Fehlerhaftes Befehlszeilenargument</value>
+    <value>Fehlerhaftes Befehlszeilenargument!</value>
   </data>
   <data name="ErrorCaptionAlreadyEntry" xml:space="preserve">
     <value>Eintrag existiert bereits</value>
@@ -176,7 +183,8 @@ exportieren</value>
     <value>Datum in der Zukunft</value>
   </data>
   <data name="ErrorMessageAlreadyEntry" xml:space="preserve">
-    <value>Der Eintrag für dieses Datum existiert bereits. \nMöchten Sie ihn überschreiben?</value>
+    <value>Der Eintrag für dieses Datum existiert bereits. 
+Möchten Sie ihn überschreiben?</value>
   </data>
   <data name="ErrorMessageDeleteEntry" xml:space="preserve">
     <value>Wollen Sie diesen Eintrag wirklich löschen?</value>
@@ -206,6 +214,8 @@ exportieren</value>
     <value>Anzahl der Tage auf Geschäftsreise:</value>
   </data>
   <data name="lbReadBusinessTrip" xml:space="preserve">
-    <value>Sie waren \nauf Geschäftsreise \nam</value>
+    <value>Sie waren 
+auf Geschäftsreise 
+am</value>
   </data>
 </root>

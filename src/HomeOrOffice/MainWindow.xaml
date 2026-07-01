@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeOrOffice"
         mc:Ignorable="d"
-        Title="HomeOrOffice" Height="400" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="/Resources/pictures/Zeichnung1.jpg">
+        Title="HomeOrOffice" Height="400" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="/Resources/pictures/Zeichnung1.jpg"
+        x:ClassModifier="internal">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

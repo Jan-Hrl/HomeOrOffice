@@ -16,8 +16,6 @@ namespace HomeOrOffice
 
         #endregion Konstanten 
 
-        private SQLiteConnection connection;
-
         public enum DBEntry
         {
             Error = -1,
@@ -26,6 +24,9 @@ namespace HomeOrOffice
             InTheOffice,
             BuisnessTrip
         }
+
+        private SQLiteConnection connection;
+
 
         public DBHandler(DateTime SelectedDay)
         {
