@@ -29,7 +29,7 @@ namespace HomeOrOffice
         public ExportKonfig(ResourceManager rm, CultureInfo ci)
         {
             InitializeComponent();
-            dBHandler = new DBHandler(DateTime.Now);
+            dBHandler = new DBHandler();
             UpdateList();
             UpdateUI();
             lbNumbersHome.Content = rm.GetString($"lbNumbersHomeText", ci);
@@ -63,24 +63,24 @@ namespace HomeOrOffice
             {
                 if (EveryDateOfYear.DayOfWeek != DayOfWeek.Saturday && EveryDateOfYear.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    switch (dBHandler.GetDate(EveryDateOfYear))
+                    Int32 dbEntry = dBHandler.GetDate(EveryDateOfYear);
+                    switch (dbEntry)
                     {
-                        case DBHandler.DBEntry.NoEntry:
+                        case (Int32)DBHandler.DBEntry.Error:
+                            break;                                           //TODO: Fehlermeldung hinzufügen
+                        case (Int32)DBHandler.DBEntry.NoEntry:                  //Wenn no Entry ist, kann es nichts anderes mehr sein, daher continue
                             CountDayOff++;
                             break;
-                        case DBHandler.DBEntry.AtHome:
-                            CountHomeday++;
-                            break;
-                        case DBHandler.DBEntry.InTheOffice:
-                            CountOfficeday++;
-                            break;
-                        case DBHandler.DBEntry.BuisnessTrip:
-                            CountBusinessTrip++;
-                            break;
-                        case DBHandler.DBEntry.Error:
                         default:
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.InTheOffice) == (Int32)DBHandler.DBEntry.InTheOffice)
+                                CountOfficeday++;
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.AtHome) == (Int32)DBHandler.DBEntry.AtHome)
+                                CountHomeday++;
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.BuisnessTrip) == (Int32)DBHandler.DBEntry.BuisnessTrip)
+                                CountBusinessTrip++;
                             break;
                     }
+
                 }
 
                 if (Convert.ToInt32(lbYears.SelectedItem) == DateTime.Now.Year && EveryDateOfYear.DayOfYear >= DateTime.Now.DayOfYear)
@@ -186,30 +186,37 @@ namespace HomeOrOffice
                 else
                 {
                     IXLCell cell = null;
-                    switch (dBHandler.GetDate(EveryDateOfYear))
+
+                    Int32 dbEntry = dBHandler.GetDate(EveryDateOfYear);
+                    switch (dbEntry)
                     {
-                        case DBHandler.DBEntry.NoEntry:
+                        case (Int32)DBHandler.DBEntry.Error:
+                            break;                                           //TODO: Fehlermeldung hinzufügen
+                        case (Int32)DBHandler.DBEntry.NoEntry:                  //Wenn no Entry ist, kann es nichts anderes mehr sein, daher continue
                             DateCell.Style.Fill.BackgroundColor = XLColor.LightPink;
                             break;
-                        case DBHandler.DBEntry.AtHome:
-                            cell = ws.Cell(i + 3, 2);
-                            break;
-                        case DBHandler.DBEntry.InTheOffice:
-                            cell = ws.Cell(i + 3, 3);
-                            break;
-                        case DBHandler.DBEntry.BuisnessTrip:
-                            cell = ws.Cell(i + 3, 4);
-                            break;
-                        case DBHandler.DBEntry.Error:
                         default:
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.InTheOffice) == (Int32)DBHandler.DBEntry.InTheOffice)
+                            {
+                                cell = ws.Cell(i + 3, 3);
+                                cell.Value = "X";
+                                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            }
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.AtHome) == (Int32)DBHandler.DBEntry.AtHome)
+                            {
+                                cell = ws.Cell(i + 3, 2);
+                                cell.Value = "X";
+                                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            }
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.BuisnessTrip) == (Int32)DBHandler.DBEntry.BuisnessTrip)
+                            {
+                                cell = ws.Cell(i + 3, 4);
+                                cell.Value = "X";
+                                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            }
                             break;
                     }
 
-                    if (cell != null)
-                    {
-                        cell.Value = "X";
-                        cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                    }
                 }
                 EveryDateOfYear = EveryDateOfYear.AddDays(1);
             }

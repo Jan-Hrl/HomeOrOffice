@@ -85,41 +85,43 @@ namespace HomeOrOffice
         /// schreibt Text je nach dem was es für einen Eintrag für den 
         /// gewählten Tag gibt.
         /// </summary>
-        /// <param name="DBEntry">Datenbankwert des jeweiligen Tages</param>
-        private void WritelbRead(DBHandler.DBEntry DBEntry)
+        /// <param name="dbEntry">Datenbankwert des jeweiligen Tages</param>
+        private void WritelbRead(Int32 dbEntry)
         {
+            //Diese Methdoe ist aktuell nur daüfr ausgelegt das nur ein Ort angewählt ist
             lbRead.Content = "";
-            switch (DBEntry)
+
+            switch (dbEntry)
             {
-                case DBHandler.DBEntry.NoEntry:
-                    lbRead.Content = rm.GetString($"lbReadNoEntry", ci);
-                    lbRead.Background = Brushes.LightGray;
-                    btnDelete.IsEnabled = false;
-                    break;
-                case DBHandler.DBEntry.AtHome:
-                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadAtHome", ci),(((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy"))); 
-                    lbRead.Background = Brushes.LightSeaGreen;
-                    btnDelete.IsEnabled = true;
-                    break;
-                case DBHandler.DBEntry.InTheOffice:
-                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadInTheOffice", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
-                    lbRead.Background = new SolidColorBrush(Color.FromArgb(0xA0, 0xFF, 0x70, 0x00));;
-                    btnDelete.IsEnabled = true;
-                    break;
-                case DBHandler.DBEntry.BuisnessTrip:
-                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadBusinessTrip", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
-                    lbRead.Background = Brushes.BurlyWood;
-                    btnDelete.IsEnabled = true;
-                    break;
-                case DBHandler.DBEntry.Error:
-                default:
+                case (Int32)DBHandler.DBEntry.Error:
                     lbRead.Content = rm.GetString($"lbReadError", ci);
                     lbRead.Background = Brushes.OrangeRed;
                     btnDelete.IsEnabled = false;
                     break;
+                case (Int32)DBHandler.DBEntry.AtHome:
+                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadAtHome", ci),(((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy"))); 
+                    lbRead.Background = Brushes.LightSeaGreen;
+                    btnDelete.IsEnabled = true;
+                    break;
+                case (Int32)DBHandler.DBEntry.InTheOffice:
+                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadInTheOffice", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
+                    lbRead.Background = new SolidColorBrush(Color.FromArgb(0xA0, 0xFF, 0x70, 0x00));;
+                    btnDelete.IsEnabled = true;
+                    break;
+                case (Int32)DBHandler.DBEntry.BuisnessTrip:
+                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadBusinessTrip", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
+                    lbRead.Background = Brushes.BurlyWood;
+                    btnDelete.IsEnabled = true;
+                    break;
+                case (Int32)DBHandler.DBEntry.NoEntry:
+                default:
+                    lbRead.Content = rm.GetString($"lbReadNoEntry", ci);
+                    lbRead.Background = Brushes.LightGray;
+                    btnDelete.IsEnabled = false;
+                    break;
             }
 
-            lastReadOrWritenEntry = DBEntry;
+            lastReadOrWritenEntry = dbEntry;
         }
 
     }

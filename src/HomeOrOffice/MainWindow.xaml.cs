@@ -28,15 +28,15 @@ namespace HomeOrOffice
         private DBHandler dbhandler;
         private Boolean Autostart = false;
 
-        private DBHandler.DBEntry lastReadOrWritenEntry = DBHandler.DBEntry.Error;
+        private Int32 lastReadOrWritenEntry = (Int32)DBHandler.DBEntry.Error;
 
 
         public MainWindow()
         {
             SetLanguage();
             CheckCommandLineArgs();
-            dbhandler = new DBHandler(DateTime.Now);
-            if (Autostart && dbhandler.GetDate(DateTime.Now) != DBHandler.DBEntry.NoEntry)
+            dbhandler = new DBHandler();
+            if (Autostart && dbhandler.GetDate(DateTime.Now) != (Int32)DBHandler.DBEntry.NoEntry)
             {
                 this.Close();
                 return;
@@ -101,14 +101,14 @@ namespace HomeOrOffice
                 }
             }
 
-            if (dbhandler.GetDate(SelectedDay) != DBHandler.DBEntry.NoEntry)
+            if (dbhandler.GetDate(SelectedDay) != (Int32)DBHandler.DBEntry.NoEntry)
             {
                 if (MessageBoxResult.No == MessageBox.Show(rm.GetString($"ErrorMessageAlreadyEntry", ci), rm.GetString($"ErrorCaptionAlreadyEntry", ci), MessageBoxButton.YesNo))
                 {
                     return;
                 }
             }
-            Boolean setEntry = dbhandler.SetEntry(SelectedDay, (bool)cbHome?.IsChecked, (bool)cbOffice?.IsChecked, (bool)cbBusinessTrip?.IsChecked);
+            Boolean setEntry = dbhandler.SetEntry(SelectedDay, (bool)cbHome.IsChecked, (bool)cbOffice.IsChecked, (bool)cbBusinessTrip.IsChecked);
             if (setEntry && (Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
             {
                 this.Close();
