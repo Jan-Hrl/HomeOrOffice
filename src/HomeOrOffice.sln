@@ -21,5 +21,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91C622CF-3405-4F53-9713-7EDB576835C5}
+		RESX_NeutralResourcesLanguage = de-DE
+		RESX_AutoCreateNewLanguageFiles = True
 	EndGlobalSection
 EndGlobal

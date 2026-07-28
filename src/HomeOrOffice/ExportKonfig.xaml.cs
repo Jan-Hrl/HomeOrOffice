@@ -1,35 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Resources;
-using System.Globalization;
-using ClosedXML.Excel;
-
-
-namespace HomeOrOffice
+﻿namespace HomeOrOffice
 {
+
+    #region using 
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Resources;
+    using System.Globalization;
+    using ClosedXML.Excel;
+    #endregion
+
     /// <summary>
     /// Interaktionslogik für ExportKonfig.xaml
     /// </summary>
-    public partial class ExportKonfig : Window
+    internal partial class ExportKonfig : Window
     {
-        private DBHandler dBHandler;
+        /// <summary>
+        /// Das Objekt welche die Kommunikation mit der SQLite Datenbank übernimmt
+        /// </summary>
+        private readonly DBHandler dBHandler;
 
-        public ExportKonfig(ResourceManager rm, CultureInfo ci)
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="rm">Resourcemanager</param>
+        /// <param name="ci">CultureInfo</param>
+        /// <param name="dbH">Kommunikation mit SQLite</param>
+        public ExportKonfig(ResourceManager rm, CultureInfo ci, DBHandler dbH)
         {
             InitializeComponent();
-            dBHandler = new DBHandler();
+            dBHandler = dbH;
             UpdateList();
             UpdateUI();
             lbNumbersHome.Content = rm.GetString($"lbNumbersHomeText", ci);
@@ -37,9 +39,12 @@ namespace HomeOrOffice
             lbNumbersOffice.Content = rm.GetString($"lbNumbersOfficeText", ci);
             lbNumbersTrip.Content = rm.GetString($"lbNumbersTripText", ci);
             btnDeleteYear.Content = rm.GetString($"btnDeleteYearText", ci);
-            btnSubmitExport.Content = rm.GetString($"btnSubmitExportText", ci).Replace("\\n", Environment.NewLine);
+            btnSubmitExport.Content = rm.GetString($"btnSubmitExportText", ci);
         }
 
+        /// <summary>
+        /// aktuallisiert die Liste, der verfügbaren Jahre
+        /// </summary>
         private void UpdateList()
         {
             lbYears.Items.Clear();
@@ -52,6 +57,9 @@ namespace HomeOrOffice
                 lbYears.SelectedItem = everyTable[everyTable.Count - 1];
         }
 
+        /// <summary>
+        /// Aktuallisiert das UI mit den Informationen des ausgewählten Jahres
+        /// </summary>
         private void UpdateUI()
         {
             if (lbYears.SelectedItem == null)
@@ -67,7 +75,7 @@ namespace HomeOrOffice
                     switch (dbEntry)
                     {
                         case (Int32)DBHandler.DBEntry.Error:
-                            break;                                           //TODO: Fehlermeldung hinzufügen
+                            break;                                              //TODO: Fehlermeldung hinzufügen
                         case (Int32)DBHandler.DBEntry.NoEntry:                  //Wenn no Entry ist, kann es nichts anderes mehr sein, daher continue
                             CountDayOff++;
                             break;
@@ -95,10 +103,13 @@ namespace HomeOrOffice
             tbNmbOffice.Text = CountOfficeday.ToString();
             tbNmbTrip.Text = CountBusinessTrip.ToString();
             tbNmbDayOff.Text = CountDayOff.ToString();
-
-
         }
 
+        /// <summary>
+        /// Event nach betätigen des Export Button
+        /// </summary>
+        /// <param name="sender">Sernderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
         private void BtnSubmitExport_Click(Object sender, RoutedEventArgs e)
         {
             try
@@ -116,8 +127,8 @@ namespace HomeOrOffice
             
                 XLWorkbook workbook = new XLWorkbook();
 
-                SetXLHeader(workbook);
-                SetXLEntries(workbook);
+                SetExcelHeader(workbook);
+                SetExcelEntries(workbook);
 
                 if (!filePath.EndsWith(".xlsx"))
                     filePath += ".xlsx";
@@ -130,7 +141,11 @@ namespace HomeOrOffice
             }
         }
 
-        private void SetXLHeader(XLWorkbook wb)
+        /// <summary>
+        /// Beschreibt und Formatiert den Header des exportierten Excel Dokument
+        /// </summary>
+        /// <param name="wb">Das Workbook des Excel exports</param>
+        private void SetExcelHeader(XLWorkbook wb)
         {
             if (lbYears.SelectedItem == null)
                 return;
@@ -163,7 +178,11 @@ namespace HomeOrOffice
             ws.Cell(2, 4).Value = $"Business Trip";
         }
 
-        private void SetXLEntries(XLWorkbook wb)
+        /// <summary>
+        /// Beschreibt die einzelnen Tage für das Excel Dokument
+        /// </summary>
+        /// <param name="wb">Das Workbook des Excel exports</param>
+        private void SetExcelEntries(XLWorkbook wb)
         {
             IXLWorksheet ws = wb.Worksheets.Worksheet(lbYears.SelectedItem.ToString());
             DateTime EveryDateOfYear = new DateTime(Convert.ToInt32(lbYears.SelectedItem), 1, 1);
@@ -191,7 +210,7 @@ namespace HomeOrOffice
                     switch (dbEntry)
                     {
                         case (Int32)DBHandler.DBEntry.Error:
-                            break;                                           //TODO: Fehlermeldung hinzufügen
+                            break;                                              //TODO: Fehlermeldung hinzufügen
                         case (Int32)DBHandler.DBEntry.NoEntry:                  //Wenn no Entry ist, kann es nichts anderes mehr sein, daher continue
                             DateCell.Style.Fill.BackgroundColor = XLColor.LightPink;
                             break;
@@ -222,11 +241,22 @@ namespace HomeOrOffice
             }
         }
 
+        /// <summary>
+        /// Event das ausgelöst wird durch anwahl eines Jahres
+        /// </summary>
+        /// <param name="sender">Sernderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
         private void LbYears_SelectionChanged(Object sender, SelectionChangedEventArgs e)
         {
             UpdateUI();
         }
 
+        /// <summary>
+        /// Event das ausgelöst wird durch anklicken des löschen Buttons
+        /// </summary>
+        /// <param name="sender">Sernderinformationen</param>
+        /// <param name="e">Eventinformationen
+        /// </param>
         private void BtnDeleteYear_Click(Object sender, RoutedEventArgs e)
         {
             if ((MessageBoxResult.No == MessageBox.Show($"Are you sure you want to delete the entire Database of {lbYears.SelectedItem}?", "Delete Year", MessageBoxButton.YesNo)))

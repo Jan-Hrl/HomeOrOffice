@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
-using System.Windows;
-
-namespace HomeOrOffice
+﻿namespace HomeOrOffice
 {
+
+    #region using
+
+    using System;
+    using System.Collections.Generic;
+    using System.Data.SQLite;
+    using System.Windows;
+    
+    #endregion
+
+    /// <summary>
+    /// Klasse für die Kommunikationen zur SQLlite Datenbank
+    /// </summary>
     internal class DBHandler : IDisposable
     {
         #region Konstanten, globale Variablen, enum
@@ -59,7 +64,7 @@ namespace HomeOrOffice
         /// </summary>
         private void Open()
         {
-            connection = new SQLiteConnection(connectionString);
+            connection = new System.Data.SQLite.SQLiteConnection(connectionString);
             if (connection.State == System.Data.ConnectionState.Closed)
             {
                 connection.Open();
@@ -207,20 +212,9 @@ namespace HomeOrOffice
         {
             try
             {
-                List<String> list = new List<string>();
-                using (SQLiteCommand cmd = new SQLiteCommand("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';", connection))
+                List<String> existingTables = GetEveryTable();
+                if (existingTables.Contains(Table))
                 {
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            list.Add($"{reader["name"]}");
-                        }
-                    }
-                }
-                if (list.Contains(Table))
-                {
-                    //CheckColumn(Table);
                     return true;
                 }
             }
@@ -237,7 +231,7 @@ namespace HomeOrOffice
         /// <returns>Liste mit alle Tabellennamen (Jahreszahlen)</returns>
         public List<String> GetEveryTable()
         {
-            List<String> everyTable = new List<string>();
+            List<String> everyTable = new List<String>();
             try
             {
                 if (connection.State == System.Data.ConnectionState.Open)
@@ -318,7 +312,7 @@ namespace HomeOrOffice
         }
 
         /// <summary>
-        /// Methode zum Schließen
+        /// Verbindung zur Datenbank wird getrennt
         /// </summary>
         private void Close()
         {

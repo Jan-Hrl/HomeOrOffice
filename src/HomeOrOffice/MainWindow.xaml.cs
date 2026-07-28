@@ -1,42 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media.Animation;
-
-namespace HomeOrOffice
+﻿namespace HomeOrOffice
 {
+    #region Using 
+
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media.Animation;
+
+    #endregion
+
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     internal partial class MainWindow : Window
     {
+        /// <summary>
+        /// enum zum vermeiden von Magic numbers
+        /// </summary>
         private enum Dialog
         {
             IstNichtErweitert = 0,
             IstErweitert
         }
 
-        //private static Boolean IstErweitert = false;
-        //private static Boolean NichtErweitert = true;
-        private DBHandler dbhandler;
+        /// <summary>
+        /// Das Objekt welche die Kommunikation mit der SQLite Datenbank übernimmt
+        /// </summary>
+        private DBHandler dbHandler;
+
+        /// <summary>
+        /// Zeigt an ob die App über den Autostart gestartet wurde
+        /// </summary>
         private Boolean Autostart = false;
 
+        /// <summary>
+        /// Der zuletzt verwendete Eintrag
+        /// </summary>
         private Int32 lastReadOrWritenEntry = (Int32)DBHandler.DBEntry.Error;
 
-
+        /// <summary>
+        /// Konstruktor des Main Windows
+        /// </summary>
         public MainWindow()
         {
             SetLanguage();
             CheckCommandLineArgs();
-            dbhandler = new DBHandler();
-            if (Autostart && dbhandler.GetDate(DateTime.Now) != (Int32)DBHandler.DBEntry.NoEntry)
+            dbHandler = new DBHandler();
+            if (Autostart && dbHandler.GetDate(DateTime.Now) != (Int32)DBHandler.DBEntry.NoEntry)
             {
                 this.Close();
                 return;
@@ -63,9 +74,11 @@ namespace HomeOrOffice
             cDayPicker.VerticalAlignment = VerticalAlignment.Center;
 
             cDayPicker.SelectedDate = DateTime.Now;
-
         }
 
+        /// <summary>
+        /// Überprüft die Übergabeparameter
+        /// </summary>
         private void CheckCommandLineArgs()
         {
             String[] CommandLineArgs = Environment.GetCommandLineArgs();
@@ -76,8 +89,8 @@ namespace HomeOrOffice
                 {
                     for (int i = 1; i < CommandLineArgs.Length; i++)
                     {
-                        SplitArg = CommandLineArgs[i].Split(':');
-                        if (SplitArg[0] == "auto")
+                        SplitArg = CommandLineArgs[i].Split('\\');
+                        if (SplitArg[SplitArg.Length-1] == "auto")
                         {
                             Autostart = true;
                         }
@@ -85,51 +98,79 @@ namespace HomeOrOffice
                 }
                 catch (Exception)
                 {
-                    if (SplitArg != null) MessageBox.Show(rm.GetString($"CommandLineError", ci));
+                    if (SplitArg != null)
+                        MessageBox.Show(rm.GetString($"CommandLineError", ci));
                 }
             }
         }
 
+        /// <summary>
+        /// Event das durch den bestätigungs Button ausgelöst wird
+        /// </summary>
+        /// <param name="sender">Sernderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
         private void btnSubmitClick(Object sender, RoutedEventArgs e)
         {
-            DateTime SelectedDay = (DateTime)cDayPicker?.SelectedDate;
-            if (SelectedDay > DateTime.Now)
+            if (cDayPicker?.SelectedDate != null)
             {
-                if (MessageBox.Show(rm.GetString($"ErrorMessageFutureDate", ci), rm.GetString($"ErrorCaptionFutureDate", ci), MessageBoxButton.YesNo) == MessageBoxResult.No)
+                DateTime SelectedDay = (DateTime)cDayPicker?.SelectedDate;
+                //Überprüft ob das Datum in der Zukunft liegt
+                if (SelectedDay > DateTime.Now)
                 {
-                    return;
+                    if (MessageBox.Show(rm.GetString($"ErrorMessageFutureDate", ci), rm.GetString($"ErrorCaptionFutureDate", ci), MessageBoxButton.YesNo) == MessageBoxResult.No)
+                    {
+                        return;
+                    }
                 }
-            }
 
-            if (dbhandler.GetDate(SelectedDay) != (Int32)DBHandler.DBEntry.NoEntry)
-            {
-                if (MessageBoxResult.No == MessageBox.Show(rm.GetString($"ErrorMessageAlreadyEntry", ci), rm.GetString($"ErrorCaptionAlreadyEntry", ci), MessageBoxButton.YesNo))
+                //Überprüft ob es bereits einen Datenbankeintrag gibt
+                if (dbHandler.GetDate(SelectedDay) != (Int32)DBHandler.DBEntry.NoEntry)
                 {
-                    return;
+                    if (MessageBoxResult.No == MessageBox.Show(rm.GetString($"ErrorMessageAlreadyEntry", ci), rm.GetString($"ErrorCaptionAlreadyEntry", ci), MessageBoxButton.YesNo))
+                    {
+                        return;
+                    }
                 }
-            }
-            Boolean setEntry = dbhandler.SetEntry(SelectedDay, (bool)cbHome.IsChecked, (bool)cbOffice.IsChecked, (bool)cbBusinessTrip.IsChecked);
-            if (setEntry && (Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
-            {
-                this.Close();
-            }
-            else
-            {
-                WritelbRead(dbhandler.GetDate((DateTime)cDayPicker.SelectedDate));
+                
+                //DB Eintrag wird gesetzt 
+                Boolean setEntry = dbHandler.SetEntry(SelectedDay, (bool)cbHome.IsChecked, (bool)cbOffice.IsChecked, (bool)cbBusinessTrip.IsChecked);
+                if (setEntry && (Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    WritelbRead(dbHandler.GetDate((DateTime)cDayPicker.SelectedDate));
+                }
             }
         }
 
+        /// <summary>
+        /// Event, ausgelöst durch Abbruch Button
+        /// </summary>
+        /// <param name="sender">Senderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
         private void btnCancelClick(Object sender, RoutedEventArgs e)
         {
-            dbhandler.Dispose();
+            dbHandler.Dispose();
             this.Close();
         }
 
+        /// <summary>
+        /// Event, ausgelöt durch wechseln der Radiobuttons 
+        /// </summary>
+        /// <param name="sender">Senderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
         private void cbCheckedChanged(Object sender, RoutedEventArgs e)
         {
             btnSubmit.IsEnabled = (cbHome.IsChecked ?? false) || (cbOffice.IsChecked ?? false) || (cbBusinessTrip.IsChecked ?? false);
         }
 
+        /// <summary>
+        /// Event, ausgelöst durch Erweitern Button
+        /// </summary>
+        /// <param name="sender">Senderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
         private void BtnErweitern_Click(Object sender, RoutedEventArgs e)
         {
             if ((Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
@@ -139,7 +180,7 @@ namespace HomeOrOffice
                 lbHeader.Content = rm.GetString($"lbHeaderSelect", ci);
                 btnErweitern.Tag = Dialog.IstErweitert;
                 cDayPicker.SelectedDate = DateTime.Now;
-                WritelbRead(dbhandler.GetDate((DateTime)cDayPicker.SelectedDate));
+                WritelbRead(dbHandler.GetDate((DateTime)cDayPicker.SelectedDate));
             }
             else if ((Dialog)btnErweitern.Tag == Dialog.IstErweitert)
             {
@@ -151,28 +192,43 @@ namespace HomeOrOffice
             }
         }
 
+        /// <summary>
+        /// Event, ausgelöst durch das änderen des Datums im CDayPicker
+        /// </summary>
+        /// <param name="sender">Senderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
         private void CDayPicker_SelectedDatesChanged(Object sender, SelectionChangedEventArgs e)
         {
             if (cDayPicker.SelectedDate != null)
             {
-                WritelbRead(dbhandler.GetDate((DateTime)cDayPicker.SelectedDate));
+                WritelbRead(dbHandler.GetDate((DateTime)cDayPicker.SelectedDate));
             }
             Mouse.Capture(null);
             btnSubmit.Focus();
         }
 
+        /// <summary>
+        /// Event, ausgelöst durch Eintrag löschen Button
+        /// </summary>
+        /// <param name="sender">Senderinformationen</param>
+        /// <param name="e">Eventinformationens</param>
         private void BtnDelete_Click(Object sender, RoutedEventArgs e)
         {
             if (MessageBoxResult.No == MessageBox.Show(rm.GetString($"ErrorMessageDeleteEntry", ci), rm.GetString($"ErrorCaptionDeleteEntry", ci), MessageBoxButton.YesNo))
                 return;
-            else if (dbhandler.DeleteEntry((DateTime)cDayPicker?.SelectedDate))
-                WritelbRead(dbhandler.GetDate((DateTime)cDayPicker.SelectedDate));
+            else if (dbHandler.DeleteEntry((DateTime)cDayPicker?.SelectedDate))
+                WritelbRead(dbHandler.GetDate((DateTime)cDayPicker.SelectedDate));
         }
 
+        /// <summary>
+        /// Event, ausgelöst durch exportieren Button
+        /// </summary>
+        /// <param name="sender">Senderinformationen</param>
+        /// <param name="e">Eventinformationens</param>
         private void BtnExport_Click(Object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
-            ExportKonfig export = new ExportKonfig(rm, ci);
+            ExportKonfig export = new ExportKonfig(rm, ci, dbHandler);
             export.Owner = this;
             export.WindowStartupLocation = WindowStartupLocation.Manual;
             export.Left = this.Left;
@@ -181,6 +237,10 @@ namespace HomeOrOffice
             this.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Animiert die größenveränderung des Hauptwindow
+        /// </summary>
+        /// <param name="heigth">die gewünschte Höhe</param>
         private void Animation(int heigth)
         {
             // Animation für die Höhe (Height)

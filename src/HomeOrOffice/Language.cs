@@ -1,14 +1,17 @@
-﻿using System;
-using System.Windows;
-using System.Globalization;
-using System.Reflection;
-using System.Threading;
-using System.Resources;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace HomeOrOffice
+﻿namespace HomeOrOffice
 {
+
+    #region using
+    using System;
+    using System.Windows;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Threading;
+    using System.Resources;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    #endregion
+
     internal partial class MainWindow
     {
         /// <summary>CultureInfo der App</summary>
