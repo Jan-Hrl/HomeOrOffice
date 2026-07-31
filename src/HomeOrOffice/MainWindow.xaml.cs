@@ -27,7 +27,7 @@
         /// <summary>
         /// Das Objekt welche die Kommunikation mit der SQLite Datenbank übernimmt
         /// </summary>
-        private DBHandler dbHandler;
+        private readonly DBHandler dbHandler;
 
         /// <summary>
         /// Zeigt an ob die App über den Autostart gestartet wurde
@@ -117,7 +117,7 @@
                 //Überprüft ob das Datum in der Zukunft liegt
                 if (SelectedDay > DateTime.Now)
                 {
-                    if (MessageBox.Show(rm.GetString($"ErrorMessageFutureDate", ci), rm.GetString($"ErrorCaptionFutureDate", ci), MessageBoxButton.YesNo) == MessageBoxResult.No)
+                    if (MessageBox.Show(rm.GetString("ErrorMessageFutureDate", ci), rm.GetString("ErrorCaptionFutureDate", ci), MessageBoxButton.YesNo) == MessageBoxResult.No)
                     {
                         return;
                     }
@@ -126,7 +126,7 @@
                 //Überprüft ob es bereits einen Datenbankeintrag gibt
                 if (dbHandler.GetDate(SelectedDay) != (Int32)DBHandler.DBEntry.NoEntry)
                 {
-                    if (MessageBoxResult.No == MessageBox.Show(rm.GetString($"ErrorMessageAlreadyEntry", ci), rm.GetString($"ErrorCaptionAlreadyEntry", ci), MessageBoxButton.YesNo))
+                    if (MessageBoxResult.No == MessageBox.Show(rm.GetString("ErrorMessageAlreadyEntry", ci), rm.GetString("ErrorCaptionAlreadyEntry", ci), MessageBoxButton.YesNo))
                     {
                         return;
                     }
@@ -176,8 +176,8 @@
             if ((Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
             {
                 Animation(400);
-                btnErweitern.Content = rm.GetString($"btnErweiternLess", ci);
-                lbHeader.Content = rm.GetString($"lbHeaderSelect", ci);
+                btnErweitern.Content = rm.GetString("btnErweiternLess", ci);
+                lbHeader.Content = rm.GetString("lbHeaderSelect", ci);
                 btnErweitern.Tag = Dialog.IstErweitert;
                 cDayPicker.SelectedDate = DateTime.Now;
                 WritelbRead(dbHandler.GetDate((DateTime)cDayPicker.SelectedDate));
@@ -185,8 +185,8 @@
             else if ((Dialog)btnErweitern.Tag == Dialog.IstErweitert)
             {
                 Animation(200);
-                btnErweitern.Content = rm.GetString($"btnErweiternMore", ci);
-                lbHeader.Content = rm.GetString($"lbHeaderWhere", ci);
+                btnErweitern.Content = rm.GetString("btnErweiternMore", ci);
+                lbHeader.Content = rm.GetString("lbHeaderWhere", ci);
                 cDayPicker.SelectedDate = DateTime.Now;
                 btnErweitern.Tag = Dialog.IstNichtErweitert;
             }
@@ -214,10 +214,10 @@
         /// <param name="e">Eventinformationens</param>
         private void BtnDelete_Click(Object sender, RoutedEventArgs e)
         {
-            if (MessageBoxResult.No == MessageBox.Show(rm.GetString($"ErrorMessageDeleteEntry", ci), rm.GetString($"ErrorCaptionDeleteEntry", ci), MessageBoxButton.YesNo))
-                return;
-            else if (dbHandler.DeleteEntry((DateTime)cDayPicker?.SelectedDate))
-                WritelbRead(dbHandler.GetDate((DateTime)cDayPicker.SelectedDate));
+            if (MessageBoxResult.Yes == MessageBox.Show(rm.GetString("ErrorMessageDeleteEntry", ci), rm.GetString("ErrorCaptionDeleteEntry", ci), MessageBoxButton.YesNo))
+                if (dbHandler.DeleteEntry((DateTime)cDayPicker?.SelectedDate))
+                    WritelbRead(dbHandler.GetDate((DateTime)cDayPicker.SelectedDate));
+                
         }
 
         /// <summary>

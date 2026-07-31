@@ -61,24 +61,24 @@
                 SetLanguage();
             }
 
-            btnExport.Content       = rm.GetString($"btnExportText", ci);
-            btnDelete.Content       = rm.GetString($"btnDeleteText", ci);
-            btnSubmit.Content       = rm.GetString($"btnSubmitText", ci);
-            btnCancel.Content       = rm.GetString($"btnCancelText", ci);
-            cbHome.Content          = rm.GetString($"cbHomeText", ci);
-            cbOffice.Content        = rm.GetString($"cbOfficeText", ci);
-            cbBusinessTrip.Content  = rm.GetString($"cbBusinessTripText", ci);
+            btnExport.Content       = rm.GetString("btnExportText", ci);
+            btnDelete.Content       = rm.GetString("btnDeleteText", ci);
+            btnSubmit.Content       = rm.GetString("btnSubmitText", ci);
+            btnCancel.Content       = rm.GetString("btnCancelText", ci);
+            cbHome.Content          = rm.GetString("cbHomeText", ci);
+            cbOffice.Content        = rm.GetString("cbOfficeText", ci);
+            cbBusinessTrip.Content  = rm.GetString("cbBusinessTripText", ci);
 
             //button Text ändert sich, sicherstellen das Richter angezeigt wird
             if ((Dialog)btnErweitern.Tag == Dialog.IstErweitert)
             {
-                btnErweitern.Content = rm.GetString($"btnErweiternLess", ci);
-                lbHeader.Content = rm.GetString($"lbHeaderSelect", ci);
+                btnErweitern.Content = rm.GetString("btnErweiternLess", ci);
+                lbHeader.Content = rm.GetString("lbHeaderSelect", ci);
             }
             else if ((Dialog)btnErweitern.Tag == Dialog.IstNichtErweitert)
             {
-                btnErweitern.Content = rm.GetString($"btnErweiternMore", ci);
-                lbHeader.Content = rm.GetString($"lbHeaderWhere", ci);
+                btnErweitern.Content = rm.GetString("btnErweiternMore", ci);
+                lbHeader.Content = rm.GetString("lbHeaderWhere", ci);
             }
 
             WritelbRead(lastReadOrWritenEntry);
@@ -97,28 +97,28 @@
             switch (dbEntry)
             {
                 case (Int32)DBHandler.DBEntry.Error:
-                    lbRead.Content = rm.GetString($"lbReadError", ci);
+                    lbRead.Content = rm.GetString("lbReadError", ci);
                     lbRead.Background = Brushes.OrangeRed;
                     btnDelete.IsEnabled = false;
                     break;
                 case (Int32)DBHandler.DBEntry.AtHome:
-                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadAtHome", ci),(((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy"))); 
+                    lbRead.Content = String.Format("{0} {1}", rm.GetString("lbReadAtHome", ci),(((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy"))); 
                     lbRead.Background = Brushes.LightSeaGreen;
                     btnDelete.IsEnabled = true;
                     break;
                 case (Int32)DBHandler.DBEntry.InTheOffice:
-                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadInTheOffice", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
-                    lbRead.Background = new SolidColorBrush(Color.FromArgb(0xA0, 0xFF, 0x70, 0x00));;
+                    lbRead.Content = String.Format("{0} {1}", rm.GetString("lbReadInTheOffice", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
+                    lbRead.Background = new SolidColorBrush(Color.FromArgb(0xA0, 0xFF, 0x70, 0x00));
                     btnDelete.IsEnabled = true;
                     break;
                 case (Int32)DBHandler.DBEntry.BuisnessTrip:
-                    lbRead.Content = String.Format("{0} {1}", rm.GetString($"lbReadBusinessTrip", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
+                    lbRead.Content = String.Format("{0} {1}", rm.GetString("lbReadBusinessTrip", ci), (((DateTime)cDayPicker?.SelectedDate).ToString("dd.MM.yy")));
                     lbRead.Background = Brushes.BurlyWood;
                     btnDelete.IsEnabled = true;
                     break;
                 case (Int32)DBHandler.DBEntry.NoEntry:
                 default:
-                    lbRead.Content = rm.GetString($"lbReadNoEntry", ci);
+                    lbRead.Content = rm.GetString("lbReadNoEntry", ci);
                     lbRead.Background = Brushes.LightGray;
                     btnDelete.IsEnabled = false;
                     break;

@@ -64,7 +64,7 @@
         /// </summary>
         private void Open()
         {
-            connection = new System.Data.SQLite.SQLiteConnection(connectionString);
+            connection = new SQLiteConnection(connectionString);
             if (connection.State == System.Data.ConnectionState.Closed)
             {
                 connection.Open();
@@ -145,7 +145,6 @@
                 {
                     throw new Exception("Database connection is not open.");
                 }
-                return false;
             }
             catch (Exception ex)
             {
@@ -180,17 +179,17 @@
                         {
                             while (reader.Read())
                             {
-                                bool Office         = reader.IsDBNull(1) ? false : Convert.ToBoolean(reader.GetInt32(1));
-                                bool Home           = reader.IsDBNull(0) ? false : Convert.ToBoolean(reader.GetInt32(0));
-                                bool BusinessTrip   = reader.IsDBNull(2) ? false : Convert.ToBoolean(reader.GetInt32(2)); 
+                                Boolean Office         = reader.IsDBNull(1) ? false : Convert.ToBoolean(reader.GetInt32(1));
+                                Boolean Home           = reader.IsDBNull(0) ? false : Convert.ToBoolean(reader.GetInt32(0));
+                                Boolean BusinessTrip   = reader.IsDBNull(2) ? false : Convert.ToBoolean(reader.GetInt32(2)); 
 
                                 //Dachte mal darüber nach mehrerr auswahl für einen Tag anwählbar zu machne, darum verodert
                                 if(Office)
-                                    res =  res | (Int32)DBEntry.InTheOffice;
+                                    res |= (Int32)DBEntry.InTheOffice;
                                 if (Home)
-                                    res = res | (Int32)DBEntry.AtHome;
+                                    res |= (Int32)DBEntry.AtHome;
                                 if (BusinessTrip)
-                                    res = res | (Int32)DBEntry.BuisnessTrip;
+                                    res |= (Int32)DBEntry.BuisnessTrip;
                                 
                             }
                         }
@@ -398,7 +397,6 @@
                     break;
                 default:
                     return -1;
-                    break;
             }
             try
             {

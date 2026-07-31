@@ -34,12 +34,12 @@
             dBHandler = dbH;
             UpdateList();
             UpdateUI();
-            lbNumbersHome.Content = rm.GetString($"lbNumbersHomeText", ci);
-            lbNumbersNoEntry.Content = rm.GetString($"lbNumbersNoEntryText", ci);
-            lbNumbersOffice.Content = rm.GetString($"lbNumbersOfficeText", ci);
-            lbNumbersTrip.Content = rm.GetString($"lbNumbersTripText", ci);
-            btnDeleteYear.Content = rm.GetString($"btnDeleteYearText", ci);
-            btnSubmitExport.Content = rm.GetString($"btnSubmitExportText", ci);
+            lbNumbersHome.Content = rm.GetString("lbNumbersHomeText", ci);
+            lbNumbersNoEntry.Content = rm.GetString("lbNumbersNoEntryText", ci);
+            lbNumbersOffice.Content = rm.GetString("lbNumbersOfficeText", ci);
+            lbNumbersTrip.Content = rm.GetString("lbNumbersTripText", ci);
+            btnDeleteYear.Content = rm.GetString("btnDeleteYearText", ci);
+            btnSubmitExport.Content = rm.GetString("btnSubmitExportText", ci);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@
                 EveryDateOfYear = EveryDateOfYear.AddDays(1);
             } while (EveryDateOfYear.Year == Convert.ToInt32(lbYears.SelectedItem));
 
-            tbNmbHome.Text = CountHomeday.ToString(); ;
+            tbNmbHome.Text = CountHomeday.ToString(); 
             tbNmbOffice.Text = CountOfficeday.ToString();
             tbNmbTrip.Text = CountBusinessTrip.ToString();
             tbNmbDayOff.Text = CountDayOff.ToString();
@@ -172,10 +172,10 @@
             ws.Cell("C2").Style.Border.LeftBorder = XLBorderStyleValues.Medium;
             ws.Cell("D2").Style.Border.LeftBorder = XLBorderStyleValues.Medium;
 
-            ws.Cell(2, 1).Value = $"Date";
-            ws.Cell(2, 2).Value = $"Homeoffice";
-            ws.Cell(2, 3).Value = $"Office";
-            ws.Cell(2, 4).Value = $"Business Trip";
+            ws.Cell(2, 1).Value = "Date";
+            ws.Cell(2, 2).Value = "Homeoffice";
+            ws.Cell(2, 3).Value = "Office";
+            ws.Cell(2, 4).Value = "Business Trip";
         }
 
         /// <summary>
@@ -190,7 +190,7 @@
             for (int i = 0; i < LastDateOfYear.DayOfYear; i++)
             {
                 IXLCell DateCell = ws.Cell(i + 3, 1);
-                DateCell.Value = EveryDateOfYear.ToString("dd.MM.yy") + " " + EveryDateOfYear.DayOfWeek.ToString()[0].ToString() + EveryDateOfYear.DayOfWeek.ToString()[1].ToString();
+                DateCell.Value = EveryDateOfYear.ToString("dd.MM.yy") + " " + EveryDateOfYear.DayOfWeek.ToString()[0] + EveryDateOfYear.DayOfWeek.ToString()[1];
 
 
                 if (EveryDateOfYear.DayOfWeek == DayOfWeek.Saturday || EveryDateOfYear.DayOfWeek == DayOfWeek.Sunday)
@@ -204,8 +204,6 @@
                 }
                 else
                 {
-                    IXLCell cell = null;
-
                     Int32 dbEntry = dBHandler.GetDate(EveryDateOfYear);
                     switch (dbEntry)
                     {
@@ -215,6 +213,7 @@
                             DateCell.Style.Fill.BackgroundColor = XLColor.LightPink;
                             break;
                         default:
+                            IXLCell cell = null;
                             if ((dbEntry & (Int32)DBHandler.DBEntry.InTheOffice) == (Int32)DBHandler.DBEntry.InTheOffice)
                             {
                                 cell = ws.Cell(i + 3, 3);
