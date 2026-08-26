@@ -5,7 +5,7 @@ Versionsnummer      : 1.0.0.0
 Basiert auf         : 1.0.0.0
 Sonderstand für     : 
 Auslieferungsdatum  : 26.08.2026
-Bearbeitet durch    : jhu
+Bearbeitet durch    : jh
 -------------------------------------------------------------------------------------
 - aufgeräumte und überarbeitet Version.
 
