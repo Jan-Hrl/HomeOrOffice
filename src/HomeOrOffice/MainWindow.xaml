@@ -15,6 +15,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
+        <Label x:Name="lbVersion" Content="v1.8.7.0" HorizontalAlignment="Left" VerticalAlignment="Bottom" RenderTransformOrigin="-0.05,-0.183" Width="100" Height="21" FontSize="10" Margin="0,0,0,340"/>
         <Button Template="{DynamicResource tbExport}" Style="{DynamicResource Export}" x:Name="btnExport" Content="" HorizontalAlignment="Left" Margin="60,0,0,230" VerticalAlignment="Bottom" Width="80" Height="80" Click="BtnExport_Click"/>
         <Calendar x:Name="cDayPicker" Margin="180,0,180,170" VerticalAlignment="Bottom" Height="177" SelectedDatesChanged="CDayPicker_SelectedDatesChanged"/>
         <Label Style="{DynamicResource Header}" x:Name="lbRead" Content="lbRead" VerticalAlignment="Bottom" FontFamily="Arial" FontSize="16" Margin="0,0,20,250.4" HorizontalAlignment="Right" Width="160" RenderTransformOrigin="0.5,0.5" Height="80" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>

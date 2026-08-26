@@ -1,8 +1,10 @@
-﻿namespace HomeOrOffice
+﻿
+namespace HomeOrOffice
 {
     #region Using 
 
     using System;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -44,6 +46,7 @@
         /// </summary>
         public MainWindow()
         {
+
             SetLanguage();
             CheckCommandLineArgs();
             dbHandler = new DBHandler();
@@ -74,6 +77,13 @@
             cDayPicker.VerticalAlignment = VerticalAlignment.Center;
 
             cDayPicker.SelectedDate = DateTime.Now;
+
+            Assembly assemblyInfos = Assembly.GetExecutingAssembly();
+#if DEBUG
+            Console.WriteLine(assemblyInfos.GetName().Version);
+            Console.WriteLine(assemblyInfos.ImageRuntimeVersion);
+#endif
+            lbVersion.Content = assemblyInfos.GetName().Version.ToString();
         }
 
         /// <summary>
