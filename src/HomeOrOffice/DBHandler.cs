@@ -179,9 +179,9 @@
                         {
                             while (reader.Read())
                             {
-                                Boolean Office         = reader.IsDBNull(1) ? false : Convert.ToBoolean(reader.GetInt32(1));
-                                Boolean Home           = reader.IsDBNull(0) ? false : Convert.ToBoolean(reader.GetInt32(0));
-                                Boolean BusinessTrip   = reader.IsDBNull(2) ? false : Convert.ToBoolean(reader.GetInt32(2)); 
+                                Boolean Office         = !reader.IsDBNull(1) && Convert.ToBoolean(reader.GetInt32(1));
+                                Boolean Home           = !reader.IsDBNull(0) && Convert.ToBoolean(reader.GetInt32(0));
+                                Boolean BusinessTrip   = !reader.IsDBNull(2) && Convert.ToBoolean(reader.GetInt32(2)); 
 
                                 //Dachte mal darüber nach mehrerr auswahl für einen Tag anwählbar zu machne, darum verodert
                                 if(Office)
