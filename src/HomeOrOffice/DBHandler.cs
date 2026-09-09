@@ -28,7 +28,7 @@
             NoEntry = 0,
             InTheOffice = 1,
             AtHome = 2,
-            BuisnessTrip = 4
+            BusinessTrip = 4
         }
 
         /// <summary>Verbindungsobjekt zur Datenbank</summary>
@@ -189,7 +189,7 @@
                                 if (Home)
                                     res |= (Int32)DBEntry.AtHome;
                                 if (BusinessTrip)
-                                    res |= (Int32)DBEntry.BuisnessTrip;
+                                    res |= (Int32)DBEntry.BusinessTrip;
                                 
                             }
                         }
@@ -392,7 +392,7 @@
                 case DBEntry.InTheOffice:
                     query = "inTheOffice = '1';";
                     break;
-                case DBEntry.BuisnessTrip:
+                case DBEntry.BusinessTrip:
                     query = "BusinessTrip = '1';";
                     break;
                 default:

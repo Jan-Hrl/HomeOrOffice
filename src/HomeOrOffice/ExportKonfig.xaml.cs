@@ -84,7 +84,7 @@
                                 CountOfficeday++;
                             if ((dbEntry & (Int32)DBHandler.DBEntry.AtHome) == (Int32)DBHandler.DBEntry.AtHome)
                                 CountHomeday++;
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.BuisnessTrip) == (Int32)DBHandler.DBEntry.BuisnessTrip)
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.BusinessTrip) == (Int32)DBHandler.DBEntry.BusinessTrip)
                                 CountBusinessTrip++;
                             break;
                     }
@@ -226,7 +226,7 @@
                                 cell.Value = "X";
                                 cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                             }
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.BuisnessTrip) == (Int32)DBHandler.DBEntry.BuisnessTrip)
+                            if ((dbEntry & (Int32)DBHandler.DBEntry.BusinessTrip) == (Int32)DBHandler.DBEntry.BusinessTrip)
                             {
                                 cell = ws.Cell(i + 3, 4);
                                 cell.Value = "X";
