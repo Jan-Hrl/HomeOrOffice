@@ -177,7 +177,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\String.DE.resx" />
     <EmbeddedResource Include="Resources\String.EN.resx" />
-    <None Include="HomeOrOffice_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
