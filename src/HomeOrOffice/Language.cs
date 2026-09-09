@@ -61,7 +61,7 @@
                 SetLanguage();
             }
 
-            btnExport.Content       = rm.GetString("btnExportText", ci);
+            tbExport.Text           = rm.GetString("btnExportText", ci);
             btnDelete.Content       = rm.GetString("btnDeleteText", ci);
             btnSubmit.Content       = rm.GetString("btnSubmitText", ci);
             btnCancel.Content       = rm.GetString("btnCancelText", ci);
