@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "HomeOrOffice"
-#define MyAppVersion "1.0.0.0"
+#define MyAppVersion "1.0.0.1"
 #define MyAppPublisher "LordsWare"
 #define MyAppExeName "HomeOrOffice.exe"
 
@@ -31,30 +31,28 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "favicon.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\ClosedXML.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\ClosedXML.Parser.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\ClosedXML.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\DocumentFormat.OpenXml.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\DocumentFormat.OpenXml.Framework.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\ExcelNumberFormat.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.application"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\Microsoft.Bcl.HashCode.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\RBush.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\SixLabors.Fonts.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\System.Numerics.Vectors.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\DE\HomeOrOffice.resources.dll"; DestDir: "{app}\DE"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\EN\HomeOrOffice.resources.dll"; DestDir: "{app}\EN"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\x64\SQLite.Interop.dll"; DestDir: "{app}\x64"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Flags: ignoreversion
+Source: "favicon.ico"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\ClosedXML.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\ClosedXML.Parser.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\ClosedXML.pdb"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\DocumentFormat.OpenXml.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\DocumentFormat.OpenXml.Framework.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\ExcelNumberFormat.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.exe"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.exe.config"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\HomeOrOffice.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\Microsoft.Bcl.HashCode.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\RBush.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\SixLabors.Fonts.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\System.Numerics.Vectors.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\DE\HomeOrOffice.resources.dll"; DestDir: "{app}\DE"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\EN\HomeOrOffice.resources.dll"; DestDir: "{app}\EN"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\x64\SQLite.Interop.dll"; DestDir: "{app}\x64"; Flags: ignoreversion confirmoverwrite
+Source: "..\src\HomeOrOffice\bin\Release\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Flags: ignoreversion confirmoverwrite
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\favicon.ico"
