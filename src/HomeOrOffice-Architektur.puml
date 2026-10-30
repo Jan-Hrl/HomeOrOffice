@@ -1,0 +1,109 @@
+@startuml HomeOrOffice-Architektur
+allowmixing
+title HomeOrOffice – Architekturübersicht
+
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+hide empty members
+
+package "HomeOrOffice (.NET Framework 4.8.1 / WPF)" {
+  class App <<WPF Application>>
+
+  class MainWindow <<WPF Window>> {
+    - dbHandler : DBHandler
+    - Autostart : Boolean
+    - lastReadOrWritenEntry : Int32
+    + MainWindow()
+    - btnSubmitClick(...)
+    - BtnDelete_Click(...)
+    - BtnExport_Click(...)
+    - CDayPicker_SelectedDatesChanged(...)
+  }
+
+  class ExportKonfig <<WPF Window>> {
+    - dBHandler : DBHandler
+    + ExportKonfig(rm, ci, dbH)
+    - UpdateList()
+    - UpdateUI()
+    - SetExcelHeader(wb)
+    - SetExcelEntries(wb)
+    - BtnSubmitExport_Click(...)
+    - BtnDeleteYear_Click(...)
+  }
+
+  class DBHandler <<SQLite Repository>> {
+    - connection : SQLiteConnection
+    + DBHandler()
+    + SetEntry(day, home, office, businessTrip) : Boolean
+    + GetDate(selectedDate) : Int32
+    + GetEveryTable() : List<String>
+    + DeleteEntry(selectedDate) : Boolean
+    + DeleteTable(table) : void
+    + Dispose() : void
+  }
+
+  enum DBEntry {
+    Error = -1
+    NoEntry = 0
+    InTheOffice = 1
+    AtHome = 2
+    BusinessTrip = 4
+  }
+
+  class Language <<partial MainWindow>> {
+    - ci : CultureInfo
+    - SetLanguage()
+    - SetMainText()
+    - WritelbRead(dbEntry)
+    - btSwitchLanguage(...)
+  }
+
+  class "Resources.String" as StringResources <<strongly typed resources>> {
+    + Culture : CultureInfo
+    + btnSubmitText : String
+    + btnExportText : String
+    + ErrorMessageFutureDate : String
+    + ...
+  }
+
+  database "HomeOrOfficeDB.db\n%ProgramData%\\HomeOrOffice\\Datenbank\n\nJahrestabelle:\nDayOfYear, atHome, inTheOffice, BusinessTrip" as Database
+
+  component "String.resx\nString.EN.resx\nString.Designer.cs" as Resources
+  component "MainWindow.xaml\nStyleButtons.xaml" as MainView
+  component "ExportKonfig.xaml" as ExportView
+}
+
+component "System.Data.SQLite.Core" as SQLite
+component "ClosedXML" as ClosedXML
+artifact "Excel-Datei\n(.xlsx)" as Excel
+
+App --> MainWindow : startet
+MainWindow *-- DBHandler
+MainWindow ..> Language : Sprachlogik
+MainWindow ..> MainView : UI-Definition
+MainWindow --> ExportKonfig : öffnet
+ExportKonfig --> DBHandler : nutzt dieselbe Instanz
+ExportKonfig ..> ExportView : UI-Definition
+Language --> StringResources : setzt Culture\nund liest Texte
+StringResources --> Resources : generiert aus
+DBHandler --> DBEntry
+DBHandler --> SQLite
+SQLite --> Database
+ExportKonfig --> ClosedXML : erstellt Arbeitsmappe
+ClosedXML --> Excel : speichert
+
+note right of Database
+  Pro Jahr wird eine Tabelle angelegt.
+  Der Primärschlüssel ist DayOfYear.
+end note
+
+legend right
+  |= Bereich |= Aufgabe |
+  | Benutzeroberfläche | MainWindow und ExportKonfig |
+  | Persistenz | DBHandler mit SQLite |
+  | Export | ExportKonfig mit ClosedXML |
+  | Lokalisierung | Language und RESX-Ressourcen |
+endlegend
+@enduml

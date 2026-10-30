@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.35213.121
+# Visual Studio Version 18
+VisualStudioVersion = 18.11.12315.225 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeOrOffice", "HomeOrOffice\HomeOrOffice.csproj", "{5D70410C-0987-4AFF-8A1F-45C0BFFE1818}"
 EndProject
@@ -20,8 +20,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {91C622CF-3405-4F53-9713-7EDB576835C5}
-		RESX_NeutralResourcesLanguage = de-DE
 		RESX_AutoCreateNewLanguageFiles = True
+		SolutionGuid = {91C622CF-3405-4F53-9713-7EDB576835C5}
 	EndGlobalSection
 EndGlobal
