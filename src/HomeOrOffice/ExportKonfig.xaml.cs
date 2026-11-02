@@ -264,21 +264,21 @@
                 }
                 else
                 {
-                    Int32 dbEntry = getDate(EveryDateOfYear);
+                    DBHandler.DBEntry dbEntry = getDate(EveryDateOfYear);
                     switch (dbEntry)
                     {
-                        case (Int32)DBHandler.DBEntry.Error:
+                        case DBHandler.DBEntry.Error:
                             break;                                              //TODO: Fehlermeldung hinzufügen
-                        case (Int32)DBHandler.DBEntry.NoEntry:                  //Wenn no Entry ist, kann es nichts anderes mehr sein, daher continue
+                        case DBHandler.DBEntry.NoEntry:                         //Wenn no Entry ist, kann es nichts anderes mehr sein, daher continue
                             DateCell.Style.Fill.BackgroundColor = XLColor.LightPink;
                             break;
                         default:
                             IXLCell cell = null;
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.InTheOffice) == (Int32)DBHandler.DBEntry.InTheOffice)
+                            if ((dbEntry & DBHandler.DBEntry.InTheOffice) == DBHandler.DBEntry.InTheOffice)
                                 cell = ws.Cell(i + 3, 3);
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.AtHome) == (Int32)DBHandler.DBEntry.AtHome)
+                            if ((dbEntry & DBHandler.DBEntry.AtHome) == DBHandler.DBEntry.AtHome)
                                 cell = ws.Cell(i + 3, 2);
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.BusinessTrip) == (Int32)DBHandler.DBEntry.BusinessTrip)
+                            if ((dbEntry & DBHandler.DBEntry.BusinessTrip) == DBHandler.DBEntry.BusinessTrip)
                                 cell = ws.Cell(i + 3, 4);
 
                             if (cell != null)
@@ -299,7 +299,7 @@
         /// </summary>
         /// <param name="SelectedDate">Der auszulesende Tag.</param>
         /// <returns>Der gespeicherte Datenbankeintrag oder <see cref="DBHandler.DBEntry.Error"/> bei einem Fehler.</returns>
-        private Int32 getDate(DateTime SelectedDate)
+        private DBHandler.DBEntry getDate(DateTime SelectedDate)
         {
             try
             {
@@ -308,7 +308,7 @@
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                return (Int32)DBHandler.DBEntry.Error;
+                return DBHandler.DBEntry.Error;
             }
         }
 

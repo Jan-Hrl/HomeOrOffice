@@ -78,33 +78,33 @@
         /// <summary>
         /// Schreibt den Text abhängig vom Eintrag des gewählten Tages.
         /// </summary>
-        private void writelbRead(Int32 dbEntry)
+        private void writelbRead(DBHandler.DBEntry dbEntry)
         {
             lbRead.Content = "";
 
             switch (dbEntry)
             {
-                case (Int32)DBHandler.DBEntry.Error:
+                case DBHandler.DBEntry.Error:
                     lbRead.Content = HomeOrOffice.Resources.String.lbReadError;
                     lbRead.Background = Brushes.OrangeRed;
                     btnDelete.IsEnabled = false;
                     break;
-                case (Int32)DBHandler.DBEntry.AtHome:
+                case DBHandler.DBEntry.AtHome:
                     lbRead.Content = String.Format("{0} {1}", HomeOrOffice.Resources.String.lbReadAtHome, ((DateTime)cDayPicker.SelectedDate).ToString("dd.MM.yy"));
                     lbRead.Background = Brushes.LightSeaGreen;
                     btnDelete.IsEnabled = true;
                     break;
-                case (Int32)DBHandler.DBEntry.InTheOffice:
+                case DBHandler.DBEntry.InTheOffice:
                     lbRead.Content = String.Format("{0} {1}", HomeOrOffice.Resources.String.lbReadInTheOffice, ((DateTime)cDayPicker.SelectedDate).ToString("dd.MM.yy"));
                     lbRead.Background = new SolidColorBrush(Color.FromArgb(0xA0, 0xFF, 0x70, 0x00));
                     btnDelete.IsEnabled = true;
                     break;
-                case (Int32)DBHandler.DBEntry.BusinessTrip:
+                case DBHandler.DBEntry.BusinessTrip:
                     lbRead.Content = String.Format("{0} {1}", HomeOrOffice.Resources.String.lbReadBusinessTrip, ((DateTime)cDayPicker.SelectedDate).ToString("dd.MM.yy"));
                     lbRead.Background = Brushes.BurlyWood;
                     btnDelete.IsEnabled = true;
                     break;
-                case (Int32)DBHandler.DBEntry.NoEntry:
+                case DBHandler.DBEntry.NoEntry:
                 default:
                     lbRead.Content = HomeOrOffice.Resources.String.lbReadNoEntry;
                     lbRead.Background = Brushes.LightGray;

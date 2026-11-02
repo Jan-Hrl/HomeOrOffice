@@ -83,7 +83,7 @@
 
             if (connection.State == System.Data.ConnectionState.Open)
             {
-                if (GetDate(day) == (Int32)DBEntry.NoEntry)
+                if (GetDate(day) == DBEntry.NoEntry)
                     //Falls es sich um einen neuen Eintrag handelt
                     createEntry(day, Home, Office, BusinessTrip);
                 else
@@ -99,9 +99,9 @@
         /// <summary>Liest den Eintrag für ein gewünschtes Datum aus.</summary>
         /// <param name="SelectedDate">Der Tag der ausgelesen werden soll</param>
         /// <returns>Information darüber wo man sich an diesen Tag aufgehalten hat</returns>
-        public Int32 GetDate(DateTime SelectedDate)
+        public DBEntry GetDate(DateTime SelectedDate)
         {
-            Int32 res = (Int32)DBEntry.NoEntry;
+            DBEntry res = DBEntry.NoEntry;
             if (!doesTableExist(SelectedDate.Year.ToString()))
             {
                 return res;
@@ -109,7 +109,7 @@
 
             if (connection.State != System.Data.ConnectionState.Open)
             {
-                return (Int32)DBEntry.Error;
+                return DBEntry.Error;
             }
             else
             {   
@@ -125,15 +125,15 @@
 
                             //Dachte mal darüber nach mehrerr auswahl für einen Tag anwählbar zu machne, darum verodert
                             if (Office)
-                                res |= (Int32)DBEntry.InTheOffice;
+                                res |= DBEntry.InTheOffice;
                             if (Home)
-                                res |= (Int32)DBEntry.AtHome;
+                                res |= DBEntry.AtHome;
                             if (BusinessTrip)
-                                res |= (Int32)DBEntry.BusinessTrip;
+                                res |= DBEntry.BusinessTrip;
                                 
                             //Wenn es einen Eintrag gibt muss auch eines der drei ausgewählt sein. 
-                            if (res == (Int32)DBEntry.NoEntry)
-                                res = (Int32)DBEntry.Error;
+                            if (res == DBEntry.NoEntry)
+                                res = DBEntry.Error;
 
                         }
                     }
@@ -173,8 +173,8 @@
         /// <returns>true: erfolgreich, false:something went wrong</returns>
         public Boolean DeleteEntry(DateTime SelectedDate)
         {           
-            Int32 dbEntry = GetDate(SelectedDate);
-            if (dbEntry == (Int32)DBEntry.NoEntry)
+            DBEntry dbEntry = GetDate(SelectedDate);
+            if (dbEntry == DBEntry.NoEntry)
             {
                 throw new Exception("No entry found");
             }

@@ -43,7 +43,7 @@ namespace HomeOrOffice
         /// <summary>
         /// Der zuletzt verwendete Eintrag
         /// </summary>
-        private Int32 lastReadOrWritenEntry = (Int32)DBHandler.DBEntry.Error;
+        private DBHandler.DBEntry lastReadOrWritenEntry = DBHandler.DBEntry.Error;
 
         /// <summary>Zeigt Fehler aus Benutzeraktionen in Dialogfenstern an.</summary>
         private FehlerMelder fm;
@@ -65,7 +65,7 @@ namespace HomeOrOffice
 
             fm = new FehlerMelder(this);
             if (Autostart && 
-                fm.VersucheAuszuführen(() => dbHandler.GetDate(DateTime.Now), (Int32)DBHandler.DBEntry.Error) != (Int32)DBHandler.DBEntry.NoEntry)
+                fm.VersucheAuszuführen(() => dbHandler.GetDate(DateTime.Now), DBHandler.DBEntry.Error) != DBHandler.DBEntry.NoEntry)
             {
                 this.Close();
                 return;
@@ -123,7 +123,7 @@ namespace HomeOrOffice
                 }
 
                 //Überprüft ob es bereits einen Datenbankeintrag gibt
-                if (fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), (Int32)DBHandler.DBEntry.Error) != (Int32)DBHandler.DBEntry.NoEntry)
+                if (fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), DBHandler.DBEntry.Error) != DBHandler.DBEntry.NoEntry)
                 {
                     if (MessageBoxResult.No == MessageBox.Show(HomeOrOffice.Resources.String.ErrorMessageAlreadyEntry, HomeOrOffice.Resources.String.ErrorCaptionAlreadyEntry, MessageBoxButton.YesNo))
                     {
@@ -140,7 +140,7 @@ namespace HomeOrOffice
                 }
                 else
                 {    
-                    writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), (Int32)DBHandler.DBEntry.Error));
+                    writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), DBHandler.DBEntry.Error));
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace HomeOrOffice
                 lbHeader.Content = HomeOrOffice.Resources.String.lbHeaderSelect;
                 btnErweitern.Tag = Dialog.IstErweitert;
                 cDayPicker.SelectedDate = DateTime.Now;
-                writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), (Int32)DBHandler.DBEntry.Error));
+                writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), DBHandler.DBEntry.Error));
             }
             else if ((Dialog)btnErweitern.Tag == Dialog.IstErweitert)
             {
@@ -202,7 +202,7 @@ namespace HomeOrOffice
         {
             if (cDayPicker.SelectedDate != null)
             {
-                writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), (Int32)DBHandler.DBEntry.Error));
+                writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), DBHandler.DBEntry.Error));
             }
             Mouse.Capture(null);
             btnSubmit.Focus();
@@ -218,7 +218,7 @@ namespace HomeOrOffice
             
             if (MessageBoxResult.Yes == MessageBox.Show(HomeOrOffice.Resources.String.ErrorMessageDeleteEntry, HomeOrOffice.Resources.String.ErrorCaptionDeleteEntry, MessageBoxButton.YesNo))
                 if (fm.VersucheAuszuführen(() => dbHandler.DeleteEntry((DateTime)cDayPicker?.SelectedDate), false))
-                    writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), (Int32)DBHandler.DBEntry.Error));
+                    writelbRead(fm.VersucheAuszuführen(() => dbHandler.GetDate((DateTime)cDayPicker.SelectedDate), DBHandler.DBEntry.Error));
 
         }
 
