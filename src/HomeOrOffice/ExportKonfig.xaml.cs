@@ -17,93 +17,44 @@
     /// </summary>
     internal partial class ExportKonfig : Window
     {
+        
+        #region variablen
+
         /// <summary>
         /// Das Objekt welche die Kommunikation mit der SQLite Datenbank übernimmt
         /// </summary>
-        private readonly DBHandler dBHandler;
+        private readonly DBHandler dbHandler;
+
+        /// <summary>Zeigt Fehler aus Benutzeraktionen in Dialogfenstern an.</summary>
+        private FehlerMelder fm;
+
+        #endregion variablen
+
+        #region Konstruktor
 
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="rm">Resourcemanager</param>
-        /// <param name="ci">CultureInfo</param>
-        /// <param name="dbH">Kommunikation mit SQLite</param>
-        public ExportKonfig(ResourceManager rm, CultureInfo ci, DBHandler dbH)
+        /// <param name="ci">Die aktuelle Anwendungskultur.</param>
+        /// <param name="dbH">Die Datenbankverbindung für den Export.</param>
+        public ExportKonfig(CultureInfo ci, DBHandler dbH)
         {
             InitializeComponent();
-            dBHandler = dbH;
+            dbHandler = dbH;
+            fm = new FehlerMelder(this);
             UpdateList();
             UpdateUI();
-            lbNumbersHome.Content = rm.GetString("lbNumbersHomeText", ci);
-            lbNumbersNoEntry.Content = rm.GetString("lbNumbersNoEntryText", ci);
-            lbNumbersOffice.Content = rm.GetString("lbNumbersOfficeText", ci);
-            lbNumbersTrip.Content = rm.GetString("lbNumbersTripText", ci);
-            btnDeleteYear.Content = rm.GetString("btnDeleteYearText", ci);
-            btnSubmitExport.Content = rm.GetString("btnSubmitExportText", ci);
+            lbNumbersHome.Content = HomeOrOffice.Resources.String.lbNumbersHomeText;
+            lbNumbersNoEntry.Content = HomeOrOffice.Resources.String.lbNumbersNoEntryText;
+            lbNumbersOffice.Content = HomeOrOffice.Resources.String.lbNumbersOfficeText;
+            lbNumbersTrip.Content = HomeOrOffice.Resources.String.lbNumbersTripText;
+            btnDeleteYear.Content = HomeOrOffice.Resources.String.btnDeleteYearText;
+            btnSubmitExport.Content = HomeOrOffice.Resources.String.btnSubmitExportText;
         }
 
-        /// <summary>
-        /// aktuallisiert die Liste, der verfügbaren Jahre
-        /// </summary>
-        private void UpdateList()
-        {
-            lbYears.Items.Clear();
-            List<String> everyTable = dBHandler.GetEveryTable();
-            for (Int32 i = 0; i < everyTable.Count; i++)
-            {
-                lbYears.Items.Add(everyTable[i]);
-            }
-            if (lbYears.Items.Count > 0 )
-                lbYears.SelectedItem = everyTable[everyTable.Count - 1];
-        }
+        #endregion Konstruktor
 
-        /// <summary>
-        /// Aktuallisiert das UI mit den Informationen des ausgewählten Jahres
-        /// </summary>
-        private void UpdateUI()
-        {
-            if (lbYears.SelectedItem == null)
-                return;
-
-            DateTime EveryDateOfYear = new DateTime(Convert.ToInt32(lbYears.SelectedItem), 1, 1);
-            Int32 CountDayOff = 0,CountOfficeday = 0, CountHomeday = 0, CountBusinessTrip = 0;
-            do
-            {
-                if (EveryDateOfYear.DayOfWeek != DayOfWeek.Saturday && EveryDateOfYear.DayOfWeek != DayOfWeek.Sunday)
-                {
-                    Int32 dbEntry = dBHandler.GetDate(EveryDateOfYear);
-                    switch (dbEntry)
-                    {
-                        case (Int32)DBHandler.DBEntry.Error:
-                            break;                                              //TODO: Fehlermeldung hinzufügen
-                        case (Int32)DBHandler.DBEntry.NoEntry:                  //Wenn no Entry ist, kann es nichts anderes mehr sein, daher continue
-                            CountDayOff++;
-                            break;
-                        default:
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.InTheOffice) == (Int32)DBHandler.DBEntry.InTheOffice)
-                                CountOfficeday++;
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.AtHome) == (Int32)DBHandler.DBEntry.AtHome)
-                                CountHomeday++;
-                            if ((dbEntry & (Int32)DBHandler.DBEntry.BusinessTrip) == (Int32)DBHandler.DBEntry.BusinessTrip)
-                                CountBusinessTrip++;
-                            break;
-                    }
-
-                }
-
-                if (Convert.ToInt32(lbYears.SelectedItem) == DateTime.Now.Year && EveryDateOfYear.DayOfYear >= DateTime.Now.DayOfYear)
-                {
-                    break;
-                }
-
-                EveryDateOfYear = EveryDateOfYear.AddDays(1);
-            } while (EveryDateOfYear.Year == Convert.ToInt32(lbYears.SelectedItem));
-
-            tbNmbHome.Text = CountHomeday.ToString(); 
-            tbNmbOffice.Text = CountOfficeday.ToString();
-            tbNmbTrip.Text = CountBusinessTrip.ToString();
-            tbNmbDayOff.Text = CountDayOff.ToString();
-        }
+        #region Events
 
         /// <summary>
         /// Event nach betätigen des Export Button
@@ -117,21 +68,17 @@
                 if (lbYears.SelectedItem == null)
                     return;
 
-                Microsoft.Win32.SaveFileDialog SFDlg = new Microsoft.Win32.SaveFileDialog();
-                SFDlg.FileName = lbYears.SelectedItem.ToString();
-                SFDlg.DefaultExt = ".xlsx";
-                SFDlg.Filter = "Excel files (*.xlsx)|*.xlsx";
-                if (SFDlg.ShowDialog() != true)
+                String filePath = getExcelPath();
+                if (filePath == null) 
                     return;
-                string filePath = SFDlg.FileName;
-            
-                XLWorkbook workbook = new XLWorkbook();
-
-                SetExcelHeader(workbook);
-                SetExcelEntries(workbook);
 
                 if (!filePath.EndsWith(".xlsx"))
                     filePath += ".xlsx";
+                
+                XLWorkbook workbook = new XLWorkbook();
+                SetExcelHeader(workbook);
+                SetExcelEntries(workbook);
+
                 workbook.SaveAs(filePath);
                 Process.Start(filePath);
             }
@@ -139,6 +86,119 @@
             {
                 MessageBox.Show(exception.Message);
             }
+        }
+
+        /// <summary>
+        /// Event das ausgelöst wird durch anwahl eines Jahres
+        /// </summary>
+        /// <param name="sender">Sernderinformationen</param>
+        /// <param name="e">Eventinformationen</param>
+        private void LbYears_SelectionChanged(Object sender, SelectionChangedEventArgs e)
+        {
+            UpdateUI();
+        }
+
+        /// <summary>
+        /// Event das ausgelöst wird durch anklicken des löschen Buttons
+        /// </summary>
+        /// <param name="sender">Sernderinformationen</param>
+        /// <param name="e">Eventinformationen
+        /// </param>
+        private void BtnDeleteYear_Click(Object sender, RoutedEventArgs e)
+        {
+            if ((MessageBoxResult.No == MessageBox.Show(String.Format(HomeOrOffice.Resources.String.SindSieSicherDasSieDieDatenbankLöschenMöchten, lbYears.SelectedItem), HomeOrOffice.Resources.String.btnDeleteYearText, MessageBoxButton.YesNo)))
+                return;
+            
+            fm.VersucheAuszuführen(()=>dbHandler.DeleteTable(lbYears.SelectedItem.ToString()));
+                        
+            UpdateList();
+            UpdateUI();
+        }
+
+        #endregion Events
+
+        #region Methode
+
+        /// <summary>
+        /// aktuallisiert die Liste, der verfügbaren Jahre
+        /// </summary>
+        private void UpdateList()
+        {
+            lbYears.Items.Clear();
+            
+            List<String> everyTable = null;
+            everyTable = fm.VersucheAuszuführen(() => dbHandler.GetEveryTable(), null);
+            if (everyTable != null)
+            {
+                for (Int32 i = 0; i < everyTable.Count; i++)
+                {
+                    lbYears.Items.Add(everyTable[i]);
+                }
+                if (lbYears.Items.Count > 0 )
+                    lbYears.SelectedItem = everyTable[everyTable.Count - 1];
+            }
+        }
+
+        /// <summary>
+        /// Aktuallisiert das UI mit den Informationen des ausgewählten Jahres
+        /// </summary>
+        private void UpdateUI()
+        {
+            if (lbYears.SelectedItem == null)
+                return;
+
+            Int32 selectedYear = Convert.ToInt32(lbYears.SelectedItem);
+            if (!TryCalculateYearStatistics(selectedYear, out Int32 countDayOff, out Int32 countOfficeDay, out Int32 countHomeDay, out Int32 countBusinessTrip))
+                return;
+
+            tbNmbHome.Text = countHomeDay.ToString();
+            tbNmbOffice.Text = countOfficeDay.ToString();
+            tbNmbTrip.Text = countBusinessTrip.ToString();
+            tbNmbDayOff.Text = countDayOff.ToString();
+        }
+
+        /// <summary>
+        /// Berechnet die Arbeitsort-Statistik für ein Jahr.
+        /// </summary>
+        /// <param name="year">Das auszuwertende Jahr.</param>
+        /// <param name="countDayOff">Anzahl der Werktage ohne Eintrag.</param>
+        /// <param name="countOfficeDay">Anzahl der Bürotage.</param>
+        /// <param name="countHomeDay">Anzahl der Homeoffice-Tage.</param>
+        /// <param name="countBusinessTrip">Anzahl der Geschäftsreisetage.</param>
+        /// <returns><c>true</c>, wenn die Statistik vollständig berechnet werden konnte.</returns>
+        private Boolean TryCalculateYearStatistics(Int32 year, out Int32 countDayOff, out Int32 countOfficeDay, out Int32 countHomeDay, out Int32 countBusinessTrip)
+        {
+            String table = year.ToString();
+            countOfficeDay      = fm.VersucheAuszuführen(() => dbHandler.CountDays(DBHandler.DBEntry.InTheOffice, table), -1);
+            countHomeDay        = fm.VersucheAuszuführen(() => dbHandler.CountDays(DBHandler.DBEntry.AtHome, table), -1);
+            countBusinessTrip   = fm.VersucheAuszuführen(() => dbHandler.CountDays(DBHandler.DBEntry.BusinessTrip, table), -1);
+            Int32 countDaysWithEntry = countOfficeDay + countHomeDay + countBusinessTrip;
+
+            if (countOfficeDay < 0 || countHomeDay < 0 || countBusinessTrip < 0)
+            {
+                countDayOff = 0;
+                return false;
+            }
+
+            countDayOff = CountWorkdays(year) - countDaysWithEntry;
+            return true;
+        }
+
+        /// <summary>Zählt die Werktage eines Jahres bis einschließlich heute.</summary>
+        private Int32 CountWorkdays(Int32 year)
+        {
+            DateTime lastDay = year == DateTime.Now.Year ? DateTime.Today : new DateTime(year, 12, 31);
+            Int32 workdayCount = 0;
+
+            for (DateTime day = new DateTime(year, 1, 1); day <= lastDay; day = day.AddDays(1))
+            {
+                if (day.DayOfWeek != DayOfWeek.Saturday && day.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    workdayCount++;
+                }
+            }
+
+            return workdayCount;
         }
 
         /// <summary>
@@ -204,7 +264,7 @@
                 }
                 else
                 {
-                    Int32 dbEntry = dBHandler.GetDate(EveryDateOfYear);
+                    Int32 dbEntry = getDate(EveryDateOfYear);
                     switch (dbEntry)
                     {
                         case (Int32)DBHandler.DBEntry.Error:
@@ -215,20 +275,14 @@
                         default:
                             IXLCell cell = null;
                             if ((dbEntry & (Int32)DBHandler.DBEntry.InTheOffice) == (Int32)DBHandler.DBEntry.InTheOffice)
-                            {
                                 cell = ws.Cell(i + 3, 3);
-                                cell.Value = "X";
-                                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                            }
                             if ((dbEntry & (Int32)DBHandler.DBEntry.AtHome) == (Int32)DBHandler.DBEntry.AtHome)
-                            {
                                 cell = ws.Cell(i + 3, 2);
-                                cell.Value = "X";
-                                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                            }
                             if ((dbEntry & (Int32)DBHandler.DBEntry.BusinessTrip) == (Int32)DBHandler.DBEntry.BusinessTrip)
-                            {
                                 cell = ws.Cell(i + 3, 4);
+
+                            if (cell != null)
+                            {
                                 cell.Value = "X";
                                 cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                             }
@@ -241,30 +295,39 @@
         }
 
         /// <summary>
-        /// Event das ausgelöst wird durch anwahl eines Jahres
+        /// Liest den Eintrag eines Tages und behandelt Fehler durch einen Dialog.
         /// </summary>
-        /// <param name="sender">Sernderinformationen</param>
-        /// <param name="e">Eventinformationen</param>
-        private void LbYears_SelectionChanged(Object sender, SelectionChangedEventArgs e)
+        /// <param name="SelectedDate">Der auszulesende Tag.</param>
+        /// <returns>Der gespeicherte Datenbankeintrag oder <see cref="DBHandler.DBEntry.Error"/> bei einem Fehler.</returns>
+        private Int32 getDate(DateTime SelectedDate)
         {
-            UpdateUI();
+            try
+            {
+                return dbHandler.GetDate(SelectedDate);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return (Int32)DBHandler.DBEntry.Error;
+            }
         }
 
         /// <summary>
-        /// Event das ausgelöst wird durch anklicken des löschen Buttons
+        /// Öffnet einen Speichern-Dialog und ermittelt den Zielpfad für den Excel-Export.
         /// </summary>
-        /// <param name="sender">Sernderinformationen</param>
-        /// <param name="e">Eventinformationen
-        /// </param>
-        private void BtnDeleteYear_Click(Object sender, RoutedEventArgs e)
+        /// <returns>Der ausgewählte Dateipfad oder <c>null</c>, wenn der Dialog abgebrochen wurde.</returns>
+        private String getExcelPath()
         {
-            if ((MessageBoxResult.No == MessageBox.Show($"Are you sure you want to delete the entire Database of {lbYears.SelectedItem}?", "Delete Year", MessageBoxButton.YesNo)))
-                return;
-            else
-                dBHandler.DeleteTable(lbYears.SelectedItem.ToString());
-
-            UpdateList();
-            UpdateUI();
+            Microsoft.Win32.SaveFileDialog SFDlg = new Microsoft.Win32.SaveFileDialog();
+            SFDlg.FileName = lbYears.SelectedItem.ToString();
+            SFDlg.DefaultExt = ".xlsx";
+            SFDlg.Filter = "Excel files (*.xlsx)|*.xlsx";
+            if (SFDlg.ShowDialog() != true)
+                return null;
+            return SFDlg.FileName;
         }
+
+        #endregion Methode
+
     }
 }

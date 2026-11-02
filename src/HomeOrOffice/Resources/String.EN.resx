@@ -217,4 +217,7 @@ Do you want to overwrite it?</value>
 on a business trip 
 on</value>
   </data>
+  <data name="SindSieSicherDasSieDieDatenbankLöschenMöchten" xml:space="preserve">
+    <value>Are you sure you want to delete the entire Database of {0}?</value>
+  </data>
 </root>

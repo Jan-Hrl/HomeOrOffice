@@ -9,6 +9,9 @@
     using System.Windows.Media;
     #endregion
 
+    /// <summary>
+    /// Enthält die sprachabhängige Darstellung des Hauptfensters.
+    /// </summary>
     internal partial class MainWindow
     {
         /// <summary>CultureInfo der App</summary>
@@ -17,7 +20,7 @@
         /// <summary>
         /// Legt die Sprache fest, die beim Starten ausgewählt ist.
         /// </summary>
-        private void SetLanguage()
+        private void setStartupLanguage()
         {
             String cultureName = Thread.CurrentThread.CurrentUICulture.Name;
             ci = cultureName.StartsWith("de", StringComparison.OrdinalIgnoreCase)
@@ -39,16 +42,16 @@
             ci = compare;
             Thread.CurrentThread.CurrentUICulture = ci;
             HomeOrOffice.Resources.String.Culture = ci;
-            SetMainText();
+            setMainText();
         }
 
         /// <summary>
         /// Methode die alle sprachabhängige Texte des Main Dialog schreibt
         /// </summary>
-        private void SetMainText()
+        private void setMainText()
         {
             if (ci == null)
-                SetLanguage();
+                setStartupLanguage();
 
             tbExport.Text = HomeOrOffice.Resources.String.btnExportText;
             btnDelete.Content = HomeOrOffice.Resources.String.btnDeleteText;
@@ -69,13 +72,13 @@
                 lbHeader.Content = HomeOrOffice.Resources.String.lbHeaderWhere;
             }
 
-            WritelbRead(lastReadOrWritenEntry);
+            writelbRead(lastReadOrWritenEntry);
         }
 
         /// <summary>
         /// Schreibt den Text abhängig vom Eintrag des gewählten Tages.
         /// </summary>
-        private void WritelbRead(Int32 dbEntry)
+        private void writelbRead(Int32 dbEntry)
         {
             lbRead.Content = "";
 

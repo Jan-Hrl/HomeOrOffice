@@ -135,7 +135,8 @@
     <Compile Include="ExportKonfig.xaml.cs">
       <DependentUpon>ExportKonfig.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Language.cs" />
+    <Compile Include="FehlerMelder.cs" />
+    <Compile Include="MainWindow.Localization.cs" />
     <Compile Include="Resources\String.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -218,4 +218,7 @@ Möchten Sie ihn überschreiben?</value>
 auf Geschäftsreise 
 am</value>
   </data>
+  <data name="SindSieSicherDasSieDieDatenbankLöschenMöchten" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie die Datenbank {0} löschen möchten?</value>
+  </data>
 </root>

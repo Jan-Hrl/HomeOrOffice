@@ -333,6 +333,15 @@ namespace HomeOrOffice.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sind Sie sicher, dass Sie die Datenbank {0} löschen möchten? ähnelt.
+        /// </summary>
+        internal static string SindSieSicherDasSieDieDatenbankLöschenMöchten {
+            get {
+                return ResourceManager.GetString("SindSieSicherDasSieDieDatenbankLöschenMöchten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Deutsch ähnelt.
         /// </summary>
         internal static string Sprache {
