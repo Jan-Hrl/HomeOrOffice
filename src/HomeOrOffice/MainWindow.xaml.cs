@@ -60,8 +60,20 @@ namespace HomeOrOffice
 
             checkCommandLineArgs();
             setStartupLanguage();
-            dbHandler = new DBHandler();
             InitializeComponent();
+
+            try
+            {
+                dbHandler = new DBHandler();
+            }
+            catch (Exception ex)
+            {
+                //Ohne Datenbank ist die App nicht nutzbar: Fehler anzeigen und sauber beenden statt abzustürzen
+                MessageBox.Show(HomeOrOffice.Resources.String.ErrorMessageOpenDatabase + Environment.NewLine + Environment.NewLine + ex.Message,
+                                HomeOrOffice.Resources.String.ErrorCaptionOpenDatabase, MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+                return;
+            }
 
             fm = new FehlerMelder(this);
             if (Autostart && 

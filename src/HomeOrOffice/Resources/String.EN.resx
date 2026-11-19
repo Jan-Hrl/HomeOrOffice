@@ -181,6 +181,9 @@ an Excel File</value>
   <data name="ErrorCaptionFutureDate" xml:space="preserve">
     <value>date in future</value>
   </data>
+  <data name="ErrorCaptionOpenDatabase" xml:space="preserve">
+    <value>Database error</value>
+  </data>
   <data name="ErrorMessageAlreadyEntry" xml:space="preserve">
     <value>The entry for this date already exists. 
 Do you want to overwrite it?</value>
@@ -190,6 +193,9 @@ Do you want to overwrite it?</value>
   </data>
   <data name="ErrorMessageFutureDate" xml:space="preserve">
     <value>The date you have selected is in the future. Are you sure this is correct?</value>
+  </data>
+  <data name="ErrorMessageOpenDatabase" xml:space="preserve">
+    <value>The database could not be opened. HomeOrOffice will now close.</value>
   </data>
   <data name="lbHeaderSelect" xml:space="preserve">
     <value>Select a date</value>

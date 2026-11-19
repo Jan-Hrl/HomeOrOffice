@@ -182,6 +182,9 @@ eine Excel-Datei</value>
   <data name="ErrorCaptionFutureDate" xml:space="preserve">
     <value>Datum in der Zukunft</value>
   </data>
+  <data name="ErrorCaptionOpenDatabase" xml:space="preserve">
+    <value>Datenbankfehler</value>
+  </data>
   <data name="ErrorMessageAlreadyEntry" xml:space="preserve">
     <value>Der Eintrag für dieses Datum existiert bereits. 
 Möchten Sie ihn überschreiben?</value>
@@ -191,6 +194,9 @@ Möchten Sie ihn überschreiben?</value>
   </data>
   <data name="ErrorMessageFutureDate" xml:space="preserve">
     <value>Das Datum, das Sie ausgewählt haben, liegt in der Zukunft. Sind Sie sicher, dass dies richtig ist?</value>
+  </data>
+  <data name="ErrorMessageOpenDatabase" xml:space="preserve">
+    <value>Die Datenbank konnte nicht geöffnet werden. HomeOrOffice wird beendet.</value>
   </data>
   <data name="lbHeaderSelect" xml:space="preserve">
     <value>Wählen Sie ein Datum</value>

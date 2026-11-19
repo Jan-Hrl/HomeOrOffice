@@ -18,8 +18,11 @@
     {
         #region Konstanten, globale Variablen, enum
 
+        /// <summary>Pfad der SQLite Datenbankdatei</summary>
+        private const String databasePath = @"c:\ProgramData\HomeOrOffice\Datenbank\HomeOrOfficeDB.db";
+
         /// <summary>Verbindungsstring für SQLLite Datenbank</summary>
-        private const String connectionString = @"Data Source=c:\ProgramData\HomeOrOffice\Datenbank\HomeOrOfficeDB.db;";
+        private const String connectionString = "Data Source=" + databasePath + ";";
 
         /// <summary>Mögliche Einträge für einen Tag in der Datenbank</summary>
         [Flags]
@@ -261,6 +264,9 @@
         /// </summary>
         private void open()
         {
+            //SQLite legt die Datei an, aber keine fehlenden Ordner (z. B. wenn die App ohne Setup gestartet wird)
+            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(databasePath));
+
             connection = new SQLiteConnection(connectionString);
             if (connection.State == System.Data.ConnectionState.Closed)
             {

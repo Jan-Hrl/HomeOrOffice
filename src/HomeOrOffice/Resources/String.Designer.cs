@@ -196,7 +196,16 @@ namespace HomeOrOffice.Resources {
                 return ResourceManager.GetString("ErrorCaptionFutureDate", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Datenbankfehler ähnelt.
+        /// </summary>
+        internal static string ErrorCaptionOpenDatabase {
+            get {
+                return ResourceManager.GetString("ErrorCaptionOpenDatabase", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Der Eintrag für dieses Datum existiert bereits. 
         ///Möchten Sie ihn überschreiben? ähnelt.
@@ -224,7 +233,16 @@ namespace HomeOrOffice.Resources {
                 return ResourceManager.GetString("ErrorMessageFutureDate", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Die Datenbank konnte nicht geöffnet werden. HomeOrOffice wird beendet. ähnelt.
+        /// </summary>
+        internal static string ErrorMessageOpenDatabase {
+            get {
+                return ResourceManager.GetString("ErrorMessageOpenDatabase", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Wählen Sie ein Datum ähnelt.
         /// </summary>
