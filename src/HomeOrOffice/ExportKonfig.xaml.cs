@@ -80,7 +80,8 @@
                 SetExcelEntries(workbook);
 
                 workbook.SaveAs(filePath);
-                Process.Start(filePath);
+                //Seit .NET Core ist UseShellExecute standardmäßig false; ohne Shell kann die .xlsx nicht mit Excel geöffnet werden
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
             }
             catch (Exception exception)
             {
