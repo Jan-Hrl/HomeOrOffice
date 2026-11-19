@@ -46,9 +46,9 @@ Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\SixLabors.Fonts.dll"; D
 Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\EN\HomeOrOffice.resources.dll"; DestDir: "{app}\EN\"; Flags: ignoreversion
 Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\runtimes\win-x86\native\SQLite.Interop.dll"; DestDir: "{app}\runtimes\win-x86\native\"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\runtimes\win-x64\native\SQLite.Interop.dll"; DestDir: "{app}\runtimes\win-x86\native\"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\runtimes\osx-x64\native\SQLite.Interop.dll"; DestDir: "{app}\runtimes\win-x86\native\"; Flags: ignoreversion
-Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\runtimes\linux-x64\native\SQLite.Interop.dll"; DestDir: "{app}\runtimes\win-x86\native\"; Flags: ignoreversion
+Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\runtimes\win-x64\native\SQLite.Interop.dll"; DestDir: "{app}\runtimes\win-x64\native\"; Flags: ignoreversion
+Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\runtimes\osx-x64\native\SQLite.Interop.dll"; DestDir: "{app}\runtimes\osx-x64\native\"; Flags: ignoreversion
+Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\runtimes\linux-x64\native\SQLite.Interop.dll"; DestDir: "{app}\runtimes\linux-x64\native\"; Flags: ignoreversion
 Source: "..\src\HomeOrOffice\bin\Release\net10.0-windows\HomeOrOffice.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
