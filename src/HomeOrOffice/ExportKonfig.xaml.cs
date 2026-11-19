@@ -188,27 +188,37 @@
             countOfficeDay      = fm.VersucheAuszuführen(() => dbHandler.CountDays(DBHandler.DBEntry.InTheOffice, table), -1);
             countHomeDay        = fm.VersucheAuszuführen(() => dbHandler.CountDays(DBHandler.DBEntry.AtHome, table), -1);
             countBusinessTrip   = fm.VersucheAuszuführen(() => dbHandler.CountDays(DBHandler.DBEntry.BusinessTrip, table), -1);
-            Int32 countDaysWithEntry = countOfficeDay + countHomeDay + countBusinessTrip;
+            HashSet<Int32> daysWithEntry = fm.VersucheAuszuführen(() => dbHandler.GetDaysWithEntry(table), null);
 
-            if (countOfficeDay < 0 || countHomeDay < 0 || countBusinessTrip < 0)
+            if (countOfficeDay < 0 || countHomeDay < 0 || countBusinessTrip < 0 || daysWithEntry == null)
             {
                 countDayOff = 0;
                 return false;
             }
 
-            countDayOff = CountWorkdays(year) - countDaysWithEntry;
+            countDayOff = CountWorkdaysWithoutEntry(year, daysWithEntry);
             return true;
         }
 
-        /// <summary>Zählt die Werktage eines Jahres bis einschließlich heute.</summary>
-        private Int32 CountWorkdays(Int32 year)
+        /// <summary>
+        /// Zählt die Werktage (Mo-Fr) eines Jahres bis einschließlich heute, für die kein Eintrag existiert.
+        /// Einträge am Wochenende oder in der Zukunft werden dabei nicht mitgezählt.
+        /// </summary>
+        /// <param name="year">Das auszuwertende Jahr.</param>
+        /// <param name="daysWithEntry">Die Tage des Jahres (DayOfYear), für die ein Eintrag existiert.</param>
+        /// <returns>Anzahl der Werktage ohne Eintrag; 0 für Jahre in der Zukunft.</returns>
+        private Int32 CountWorkdaysWithoutEntry(Int32 year, HashSet<Int32> daysWithEntry)
         {
+            //In einem zukünftigen Jahr ist noch kein Werktag vergangen, der fehlen könnte
+            if (year > DateTime.Now.Year)
+                return 0;
+
             DateTime lastDay = year == DateTime.Now.Year ? DateTime.Today : new DateTime(year, 12, 31);
             Int32 workdayCount = 0;
 
             for (DateTime day = new DateTime(year, 1, 1); day <= lastDay; day = day.AddDays(1))
             {
-                if (day.DayOfWeek != DayOfWeek.Saturday && day.DayOfWeek != DayOfWeek.Sunday)
+                if (day.DayOfWeek != DayOfWeek.Saturday && day.DayOfWeek != DayOfWeek.Sunday && !daysWithEntry.Contains(day.DayOfYear))
                 {
                     workdayCount++;
                 }

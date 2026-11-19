@@ -250,9 +250,28 @@
             {
                 Int32 result = 0;
                 result = Convert.ToInt32(cmd.ExecuteScalar());
-                    
+
                 return result;
             }
+        }
+
+        /// <summary>Liest alle Tage eines Jahres aus, für die ein Arbeitsort eingetragen ist.</summary>
+        /// <param name="Table">Die Jahres-Tabelle, die ausgelesen wird.</param>
+        /// <returns>Die Tage des Jahres (DayOfYear), für die ein Eintrag existiert.</returns>
+        public HashSet<Int32> GetDaysWithEntry(String Table)
+        {
+            HashSet<Int32> daysWithEntry = new HashSet<Int32>();
+            using (SQLiteCommand cmd = new SQLiteCommand($"SELECT DayOfYear FROM '{Table}' WHERE atHome = '1' OR inTheOffice = '1' OR BusinessTrip = '1';", connection))
+            {
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        daysWithEntry.Add(reader.GetInt32(0));
+                    }
+                }
+            }
+            return daysWithEntry;
         }
 
         #endregion public
