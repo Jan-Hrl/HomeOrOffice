@@ -107,10 +107,14 @@
         /// </param>
         private void BtnDeleteYear_Click(Object sender, RoutedEventArgs e)
         {
-            if ((MessageBoxResult.No == MessageBox.Show(String.Format(HomeOrOffice.Resources.String.SindSieSicherDasSieDieDatenbankLöschenMöchten, lbYears.SelectedItem), HomeOrOffice.Resources.String.btnDeleteYearText, MessageBoxButton.YesNo)))
+            if (lbYears.SelectedItem == null)
                 return;
-            
-            fm.VersucheAuszuführen(()=>dbHandler.DeleteTable(lbYears.SelectedItem.ToString()));
+
+            String selectedYear = lbYears.SelectedItem.ToString();
+            if ((MessageBoxResult.No == MessageBox.Show(String.Format(HomeOrOffice.Resources.String.SindSieSicherDasSieDieDatenbankLöschenMöchten, selectedYear), HomeOrOffice.Resources.String.btnDeleteYearText, MessageBoxButton.YesNo)))
+                return;
+
+            fm.VersucheAuszuführen(()=>dbHandler.DeleteTable(selectedYear));
                         
             UpdateList();
             UpdateUI();
@@ -145,7 +149,18 @@
         /// </summary>
         private void UpdateUI()
         {
-            if (lbYears.SelectedItem == null)
+            //Ohne ausgewähltes Jahr (z. B. nachdem das letzte Jahr gelöscht wurde) gibt es nichts zu löschen oder zu exportieren
+            Boolean yearSelected = lbYears.SelectedItem != null;
+            btnDeleteYear.IsEnabled = yearSelected;
+            btnSubmitExport.IsEnabled = yearSelected;
+
+            //Alte Zahlen entfernen, damit keine Werte eines gelöschten oder anderen Jahres stehen bleiben
+            tbNmbHome.Text = String.Empty;
+            tbNmbOffice.Text = String.Empty;
+            tbNmbTrip.Text = String.Empty;
+            tbNmbDayOff.Text = String.Empty;
+
+            if (!yearSelected)
                 return;
 
             Int32 selectedYear = Convert.ToInt32(lbYears.SelectedItem);
