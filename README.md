@@ -8,9 +8,9 @@ It is a personal hobby project that I built for my own day-to-day use: a lightwe
 
 - Record a work location for any date using a calendar
 - Review, replace, or delete existing entries
-- Optional automatic prompt when Windows starts
+- Automatic prompt when you log in to Windows, shown only if today has no entry yet
 - Store data locally in an SQLite database
-- Display yearly totals for home office, office, business trips, and unrecorded working days
+- Display yearly totals for home office, office, business trips, and unrecorded working days (Monday to Friday up to today; public holidays are not taken into account)
 - Export a complete year to an Excel (`.xlsx`) file
 - Switch the UI between English and German
 - Install the application with an Inno Setup installer
@@ -41,7 +41,7 @@ The export view provides yearly totals and creates an Excel file containing ever
 
 ## Technology
 
-- C# / .NET Framework 4.8.1
+- C# / .NET 10 (`net10.0-windows`)
 - WPF
 - SQLite (`System.Data.SQLite.Core`)
 - ClosedXML for Excel export
@@ -49,18 +49,41 @@ The export view provides yearly totals and creates an Excel file containing ever
 
 ## Getting started
 
+### Requirements
+
+- Windows
+- [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) — the installer does not include it, so install it first if it is not already on the computer
+
 ### Install the application
 
-The installer is available as `Setup/HomeOrOffice_Setup.exe`. Run it and choose whether a desktop shortcut should be created. The application can also create a Windows startup shortcut, so it can ask for the current work location when you log in.
+The installer is available as `Setup/HomeOrOffice_Setup.exe`. Run it and choose whether a desktop shortcut should be created.
+
+The installer also adds a shortcut to the Windows startup folder. It starts HomeOrOffice with the `auto` parameter when you log in: the window only appears if no work location has been recorded for today yet. To turn this off, delete the HomeOrOffice shortcut from the startup folder (`shell:common startup`).
 
 ### Build from source
 
-1. Open `src/HomeOrOffice.sln` in Visual Studio.
-2. Restore NuGet packages.
-3. Build the `Release` configuration.
+You need the .NET 10 SDK (included in Visual Studio 2026).
 
-The project targets Windows and requires .NET Framework 4.8.1.
+```powershell
+dotnet build src/HomeOrOffice.sln -c Release
+```
+
+Alternatively, open `src/HomeOrOffice.sln` in Visual Studio and build the `Release` configuration. The output is written to `src/HomeOrOffice/bin/Release/net10.0-windows/`.
+
+### Build the installer
+
+Build the `Release` configuration first, then compile `Setup/Setup.iss` with Inno Setup. The script takes its files from `src/HomeOrOffice/bin/Release/net10.0-windows/` and writes `HomeOrOffice_Setup.exe` to the `Setup` folder.
+
+## Data storage
+
+All work-location data is stored locally in an SQLite database:
+
+```
+C:\ProgramData\HomeOrOffice\Datenbank\HomeOrOfficeDB.db
+```
+
+The database contains one table per year. If the folder does not exist, the application creates it on startup. The data is kept when the application is uninstalled.
 
 ## Notes
 
-All work-location data is stored locally on the computer. This project is intentionally small and focused on a practical personal workflow.
+This project is intentionally small and focused on a practical personal workflow.

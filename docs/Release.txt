@@ -3,6 +3,19 @@ Release.txt:
  
 Version Status: HomeOrOffice
 -----------------------------------------------------------------------------
+Version Number      : 1.0.1.0
+Based on	        : 1.0.0.1
+Shipment Date	  	: 19.11.2026
+Edited by		    : jhu
+-----------------------------------------------------------------------------
+- Migrated from .NET Framework 4.8.1 to .NET 10. The .NET 10 Desktop Runtime is now required.
+- Excel export: the exported file opens automatically again after saving.
+- The database folder is created automatically if it is missing. If the database cannot be
+  opened, an error message is shown and the application closes instead of crashing.
+- Installer updated for the .NET 10 build output.
+- README updated.
+
+-----------------------------------------------------------------------------
 Version Number      : 1.0.0.1
 Based on	        : 1.0.0.0
 Shipment Date	  	: 09.09.2026
